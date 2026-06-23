@@ -1,0 +1,6 @@
+{
+  "name": "CSES AI Insight Hub",
+  "description": "사회적가치연구원(CSES) 연구원들을 위한 CSES AI Insight Hub. AI 기반 학술 분석, 큐레이션 코치, 트렌드 분석, 자료 아카이빙 기능을 제공합니다.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
