@@ -21,7 +21,9 @@ import {
   Bookmark,
   FileText,
   RefreshCw,
-  Award
+  Award,
+  HelpCircle,
+  ArrowRight
 } from "lucide-react";
 import { 
   SEED_COURSES, 
@@ -52,7 +54,7 @@ export default function App() {
   // --------------------------------------------------
   // 1. App Navigation & Theme State
   // --------------------------------------------------
-  const [activeTab, setActiveTab] = useState<"Home" | "DailyNews" | "AIClassroom" | "DeepInsight">("Home");
+  const [activeTab, setActiveTab] = useState<"Home" | "DailyNews" | "AIClassroom" | "DeepInsight_DB" | "DeepInsight_Prompt" | "Guide">("Home");
   const [time, setTime] = useState<Date>(new Date());
   
   // Real-time Clock synchronization
@@ -453,412 +455,320 @@ export default function App() {
   // 6. UI Navigation Rendering Logic
   // --------------------------------------------------
   return (
-    <div className="min-h-screen flex bg-slate-50 text-slate-800 font-sans selection:bg-brand-100 selection:text-brand-900" id="cses-app-container">
+    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-800 font-sans selection:bg-brand-100 selection:text-brand-900" id="cses-app-container">
       
       {/* --------------------------------------------------
-          LEFT SIDEBAR NAVIGATION (Strict constraint)
+          GLOBAL TOP NAVIGATION BAR (GNB)
           -------------------------------------------------- */}
-      <aside className="hidden lg:flex flex-col w-72 bg-white border-r border-slate-200/80 shrink-0 min-h-screen relative z-10 shadow-sm" id="cses-sidebar-desktop">
-        
-        {/* Brand Header */}
-        <div className="p-6 pb-5 border-b border-slate-100 flex flex-col gap-3">
-          <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => setActiveTab("Home")}>
-            <div className="w-9 h-9 rounded-xl bg-[#D20A50] text-white flex items-center justify-center font-black text-sm shadow-md shadow-pink-200">
+      <header className="w-full bg-white border-b border-slate-100 sticky top-0 z-50 h-20 flex items-center shadow-xs">
+        <div className="w-full max-w-7xl mx-auto px-4 md:px-8 flex items-center justify-between gap-4">
+          
+          {/* Left Brand Area */}
+          <div className="flex items-center gap-3 cursor-pointer select-none shrink-0" onClick={() => setActiveTab("Home")}>
+            <div className="w-10 h-10 rounded-xl bg-[#D20A50] text-white flex items-center justify-center font-black text-base shadow-sm">
               AI
             </div>
-            <div className="flex flex-col">
-              <span className="text-base font-extrabold tracking-tight text-[#D20A50]">
-                CSES AI Hub
+            <div className="flex flex-col text-left">
+              <span className="text-sm font-black tracking-tight text-[#D20A50] leading-none">
+                CSES AI HUB
               </span>
-              <span className="text-[9px] text-slate-400 font-mono font-bold tracking-widest leading-none mt-1 uppercase">
-                RESEARCH SUPPORT SYSTEM
+              <span className="text-[8px] text-slate-400 font-bold tracking-widest uppercase mt-1 leading-none">
+                INSIGHT SUPPORT SYSTEM
               </span>
             </div>
           </div>
-        </div>
 
-        {/* Brand Slogan Block */}
-        <div className="mx-6 my-4 p-4 rounded-2xl bg-pink-50/40 border border-brand-100/30 text-start">
-          <span className="text-[10px] font-extrabold text-[#D20A50] uppercase tracking-wider block mb-1">SLOGAN</span>
-          <p className="text-xs text-slate-600 leading-relaxed font-normal">
-            AI로 그리는 사회적 가치의 미래,<br />
-            연구원을 위한 스마트 리서치 파트너
-          </p>
-        </div>
+          {/* Center Navigation Tabs (Horizontal & Responsive Scrollable on mobile) */}
+          <nav className="flex items-center gap-1.5 overflow-x-auto scrollbar-none py-1">
+            {[
+              { id: "Home" as const, label: "홈", icon: (className: string) => <HomeIcon className={className} /> },
+              { id: "AIClassroom" as const, label: "AI 교육", icon: (className: string) => <BookOpen className={className} /> },
+              { id: "DailyNews" as const, label: "AI 뉴스", icon: (className: string) => <Newspaper className={className} /> },
+              { id: "DeepInsight_DB" as const, label: "AI DB", icon: (className: string) => <Database className={className} /> },
+              { id: "DeepInsight_Prompt" as const, label: "AI 프롬프트", icon: (className: string) => <Terminal className={className} /> },
+            ].map((tab) => {
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs md:text-sm font-bold transition-all duration-150 cursor-pointer whitespace-nowrap ${
+                    isActive
+                      ? "bg-[#D20A50] text-white shadow-sm"
+                      : "text-slate-650 hover:bg-slate-50 hover:text-[#D20A50]"
+                  }`}
+                >
+                  <span className="shrink-0">{tab.icon(isActive ? "w-4 h-4 text-white" : "w-4 h-4 text-slate-400 group-hover:text-[#D20A50]")}</span>
+                  <span>{tab.label}</span>
+                </button>
+              );
+            })}
+          </nav>
 
-        {/* Nav tabs list */}
-        <div className="flex-grow px-4 py-2 space-y-1.5 overflow-y-auto">
-          {[
-            { id: "Home" as const, label: "홈", icon: HomeIcon, desc: "Bento 대시보드" },
-            { id: "DailyNews" as const, label: "일자별 뉴스 아카이브", icon: Newspaper, desc: "네이버 연합 실시간 검색" },
-            { id: "AIClassroom" as const, label: "맞춤형 AI 강의실", icon: BookOpen, desc: "수준별 강좌 및 AI 코치" },
-            { id: "DeepInsight" as const, label: "심층 인사이트 메뉴", icon: Terminal, desc: "프롬프트 실무 & DB 조회" }
-          ].map(tab => {
-            const Icon = tab.icon;
-            const isActive = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`w-full flex items-center justify-between px-4 py-3.5 rounded-2xl transition duration-200 group cursor-pointer text-start ${
-                  isActive 
-                    ? "bg-[#D20A50] text-white shadow-md shadow-pink-900/10 font-bold" 
-                    : "text-slate-600 hover:bg-slate-100/80 hover:text-slate-900"
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <Icon className={`w-4 h-4 shrink-0 ${isActive ? "text-white" : "text-slate-400 group-hover:text-slate-600"}`} />
-                  <div className="flex flex-col">
-                    <span className="text-xs font-bold leading-normal">{tab.label}</span>
-                    <span className={`text-[9px] ${isActive ? "text-pink-100/80" : "text-slate-400"}`}>{tab.desc}</span>
-                  </div>
-                </div>
-                <ChevronRight className={`w-3.5 h-3.5 transition-transform ${isActive ? "text-white" : "text-slate-300 group-hover:text-slate-500 group-hover:translate-x-0.5"}`} />
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Sidebar Footer with system diagnostics */}
-        <div className="p-4 border-t border-slate-100 bg-slate-50/50 text-xs text-slate-500 space-y-2 font-mono">
-          <div className="flex justify-between items-center text-[10px]">
-            <span className="text-slate-400 font-bold uppercase tracking-wider">SYSTEM STATUS</span>
-            <span className="flex items-center gap-1 font-bold text-emerald-600">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-              ONLINE
-            </span>
+          {/* Right Search Input */}
+          <div className="relative w-36 sm:w-56 md:w-64 shrink-0">
+            <input
+              type="text"
+              placeholder="통합 검색..."
+              value={naverSearchQuery}
+              onChange={(e) => setNaverSearchQuery(e.target.value)}
+              className="w-full bg-slate-50 text-xs pl-9 pr-4 py-2.5 rounded-full border border-slate-205 outline-none focus:bg-white focus:border-[#D20A50] transition-all text-slate-800 placeholder-slate-400 font-medium"
+            />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none" />
           </div>
-          <div className="space-y-1 text-[10.5px]">
-            <div className="flex justify-between">
-              <span>LOCAL TIME:</span>
-              <span className="text-slate-800 font-bold text-right leading-none">
-                {time.toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false })}
-              </span>
-            </div>
-            <div className="flex justify-between">
-              <span>UTC OFFSET:</span>
-              <span className="text-slate-800">KST (UTC+09)</span>
-            </div>
-          </div>
-          <p className="text-[9px] text-slate-400 border-t border-slate-200/50 pt-2 text-center text-sans font-medium">
-            © 2026 CSES AI HUB
-          </p>
+
         </div>
-      </aside>
+      </header>
 
       {/* --------------------------------------------------
-          MAIN WORKSPACE LAYOUT Panel Container
+          MAIN WORKSPACE LAYOUT Container
           -------------------------------------------------- */}
-      <div className="flex-grow flex flex-col min-w-0 max-w-full overflow-hidden" id="cses-main-panel">
-        
-        {/* TOP COMPONENT: GNB Header bar for search, timing, and mobile layout */}
-        <header className="bg-white border-b border-slate-200/80 sticky top-0 z-20 px-4 md:px-8 h-18 flex items-center justify-between shadow-sm">
-          
-          {/* Logo element for mobile / tablet layout */}
-          <div className="flex items-center gap-3 lg:hidden">
-            <button 
-              onClick={() => setActiveTab("Home")}
-              className="w-8 h-8 rounded-lg bg-[#D20A50] text-white flex items-center justify-center font-bold text-xs"
-            >
-              AI
-            </button>
-            <span className="font-extrabold text-[#D20A50] text-sm tracking-tight sm:inline hidden">
-              CSES AI Hub
-            </span>
-          </div>
-
-          <div className="hidden lg:block">
-            <h2 className="text-base font-extrabold text-slate-900 tracking-tight">
-              {activeTab === "Home" && "연구 종합 대시보드"}
-              {activeTab === "DailyNews" && "일자별 뉴스 아카이브"}
-              {activeTab === "AIClassroom" && "맞춤형 AI 강의실"}
-              {activeTab === "DeepInsight" && "심층 인사이트 메뉴"}
-            </h2>
-          </div>
-
-          {/* Quick Search & Platform guide button */}
-          <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
-            <div className="relative w-44 sm:w-56 md:w-64">
-              <input 
-                type="text" 
-                placeholder="Naver 뉴스 검색어..." 
-                value={naverSearchQuery}
-                onChange={(e) => setNaverSearchQuery(e.target.value)}
-                className="w-full bg-slate-100 text-xs px-4 py-2.5 pr-10 rounded-xl border border-transparent outline-none focus:bg-white focus:border-[#D20A50] transition-all text-slate-700 font-sans font-medium"
-              />
-              <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
-            </div>
-
-            <button 
-              onClick={() => setIsGuideOpen(true)}
-              className="flex items-center gap-1 px-3 py-2 rounded-xl text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200/80 hover:text-[#D20A50] transition cursor-pointer"
-            >
-              <Info className="w-4 h-4 text-[#D20A50]" />
-              <span className="hidden sm:inline">이용 가이드</span>
-            </button>
-          </div>
-        </header>
-
-        {/* Mobile quick tabs sidebar backup */}
-        <nav className="lg:hidden flex items-center justify-around bg-white border-b border-slate-100 px-2 py-2.5">
-          {[
-            { id: "Home" as const, icon: HomeIcon, text: "홈" },
-            { id: "DailyNews" as const, icon: Newspaper, text: "뉴스" },
-            { id: "AIClassroom" as const, icon: BookOpen, text: "강의실" },
-            { id: "DeepInsight" as const, icon: Terminal, text: "인사이트" }
-          ].map(tab => {
-            const Icon = tab.icon;
-            const isActive = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl cursor-pointer ${
-                  isActive ? "text-[#D20A50] font-bold" : "text-slate-400"
-                }`}
-              >
-                <Icon className="w-4 h-4" />
-                <span className="text-[10px] font-bold">{tab.text}</span>
-              </button>
-            );
-          })}
-        </nav>
-
-        {/* --------------------------------------------------
-            PAGE VIEW CONTROLLER: Full Content rendering
-            -------------------------------------------------- */}
-        <main className="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 max-w-7xl w-full mx-auto" id="cses-scroll-viewport">
+      <main className="flex-grow overflow-y-auto p-4 md:p-8 space-y-6 max-w-7xl w-full mx-auto" id="cses-scroll-viewport">
           
           {/* TAB 1: Home Dashboard inside Bento Grid Layout */}
           {activeTab === "Home" && (
-            <div className="space-y-6" id="view-dashboard-home">
+            <div className="space-y-12" id="view-dashboard-home">
               
-              {/* Custom Welcome card with brand points */}
+              {/* BAND 1: Large Pink Welcome Banner (Screenshot 1) */}
               <div 
-                className="relative overflow-hidden bg-gradient-to-br from-[#D20A50] via-[#b80543] to-[#800028] text-white rounded-[32px] p-6 md:p-8 shadow-lg shadow-pink-900/10"
+                className="relative overflow-hidden bg-gradient-to-br from-[#D20A50] to-[#b80543] text-white rounded-[40px] p-8 md:p-14 lg:p-16 shadow-xl shadow-pink-900/10 text-start"
               >
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-white/10 via-transparent to-transparent pointer-events-none" />
-                <div className="relative z-10 space-y-4 max-w-2xl text-start">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-extrabold bg-white/15 text-pink-100 border border-white/25">
+                <div className="relative z-10 space-y-6 max-w-4xl">
+                  <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-[10px] font-black tracking-wider bg-white/10 text-pink-100 border border-white/20 uppercase">
                     <Sparkles className="w-3.5 h-3.5 text-pink-200 animate-pulse" />
-                    SPECIAL SUITE
+                    CSES AI INSIGHT HUB
                   </span>
-                  <h1 className="text-2xl sm:text-3xl font-black tracking-tight leading-snug">
-                    AI로 그리는 사회적 가치의 미래,<br />
-                    연구원을 위한 스마트 리서치 파트너
+                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-tight">
+                    AI로 더 넓게,<br />
+                    연구를 더 깊게.
                   </h1>
-                  <p className="text-pink-100/90 text-xs leading-relaxed max-w-xl">
-                    사회적가치연구원(CSES)의 전문 축적 지식 데이터베이싱과 실시간 네이버 뉴스 API 융합 및 Gemini LLM 요약 기술을 결합하여 고품격 학술 리포트 작성을 지원합니다.
+                  <p className="text-pink-100/90 text-sm md:text-base leading-relaxed max-w-2xl font-medium">
+                    사회적가치연구원(CSES)의 전문 지식과 실시간 인공지능 트렌드 분석을 결합하여, 리서치의 질적 도약을 지원합니다.
                   </p>
+                  
+                  <div className="flex flex-wrap items-center gap-4 pt-4">
+                    <button 
+                      onClick={() => setActiveTab("Guide")}
+                      className="bg-white text-[#D20A50] hover:bg-slate-50 font-black text-xs md:text-sm px-6 py-4 rounded-[20px] shadow-sm transition duration-150 cursor-pointer flex items-center gap-1.5"
+                    >
+                      플랫폼 가이드 보기 <ArrowRight className="w-4 h-4 text-[#D20A50]" />
+                    </button>
+                    <button 
+                      onClick={handleStartSurvey}
+                      className="bg-white/10 text-white hover:bg-white/15 border border-white/20 font-black text-xs md:text-sm px-6 py-4 rounded-[20px] transition duration-150 cursor-pointer flex items-center gap-1.5"
+                    >
+                      AI 역량 자가진단 <Sparkles className="w-4 h-4 text-pink-200" />
+                    </button>
+                  </div>
                 </div>
               </div>
 
-              {/* BENTO GRID (Academic layout - high hierarchical precision) */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 items-stretch">
+              {/* BAND 2: AI News cards */}
+              <div className="space-y-6">
                 
-                {/* CARD 1: Today's AI Insight (Bento lg:col-span-12 or 7) */}
-                <div className="lg:col-span-7 bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm flex flex-col justify-between space-y-4 text-start">
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-extrabold text-[#D20A50] uppercase tracking-wider block bg-pink-100/60 px-2.5 py-1 rounded-lg">
-                        Today's AI Insight
-                      </span>
-                      <span className="text-[11px] text-slate-400 font-mono tracking-tight">Today: {time.toLocaleDateString("ko-KR")}</span>
+                {/* Full Width News Block */}
+                <div className="space-y-6">
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-2">
+                      <Newspaper className="w-5 h-5 text-slate-400 shrink-0" />
+                      <h2 className="text-xl font-black text-slate-900 tracking-tight">AI 뉴스</h2>
                     </div>
-                    <h3 className="text-lg font-black text-slate-900 tracking-tight leading-snug">
-                      인공지능(AI)과 SROI 화폐계측 알고리즘의 심층 결합 동향
-                    </h3>
-                    <p className="text-xs text-slate-600 leading-relaxed">
-                      최근 글로벌 ESG 공시 표준(GRI, ISSB)의 고도화 흐름 속에서, 기업의 환경 사회 공헌 비용 및 온실가스 저감 활동을 <b>사회적 투자수익률(SROI) 화폐액</b>으로 기계 자동 변환하는 RAG 기반 LLM 알고리즘이 크게 도약하고 있습니다. 
-                      연구원의 고질적인 수작업 시트 수치 검증 절차가 지능화되어 데이터 일관성 정밀 제고가 실현되고 있습니다.
-                    </p>
-                  </div>
-                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
-                    <div className="flex items-center gap-1.5 text-[11px] text-slate-400">
-                      <Clock className="w-3.5 h-3.5 text-[#D20A50]" />
-                      <span>추천 인사이트 매칭</span>
-                    </div>
-                    <button 
-                      onClick={() => setActiveTab("DeepInsight")}
-                      className="text-xs text-[#D20A50] font-bold hover:underline inline-flex items-center gap-0.5"
-                    >
-                      심층 분석도구 사용 <ChevronRight className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                </div>
-
-                {/* CARD 3: CTA Diagnostic survey button (Bento lg:col-span-5) */}
-                <div 
-                  className="lg:col-span-5 bg-gradient-to-br from-indigo-900 via-purple-900 to-slate-900 text-white rounded-3xl p-6 shadow-md flex flex-col justify-between relative overflow-hidden text-start group border border-slate-800"
-                >
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-white/10 via-transparent to-transparent pointer-events-none" />
-                  <div className="space-y-2 relative z-10">
-                    <span className="inline-block bg-white/15 text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider">
-                      큐레이션 자가진단
-                    </span>
-                    <h3 className="text-lg font-black tracking-tight leading-snug">
-                      내 실무에 즉시 통하는<br />
-                      AI 교육 커리큘럼 추천
-                    </h3>
-                    <p className="text-[11.5px] text-slate-300 leading-relaxed font-sans">
-                      학술 설계, SROI 정량 계측, RAG 임팩트 프롬프팅 중 연구원님의 레벨과 현재 목적에 알맞는 온·오프라인 강좌를 스마트하게 진출해 드립니다.
-                    </p>
-                  </div>
-                  
-                  <div className="pt-4 relative z-10">
-                    <button 
-                      onClick={handleStartSurvey}
-                      className="w-full bg-[#D20A50] hover:bg-pink-600 text-white text-xs font-black py-3.5 p-4 rounded-xl shadow-lg transition duration-200 flex items-center justify-center gap-1.5 cursor-pointer transform group-hover:scale-[1.02]"
-                    >
-                      나의 레벨과 목적에 맞는 강의 추천받기 🎯
-                    </button>
-                  </div>
-                </div>
-
-                {/* CARD 2: Daily News list scroll box (Bento lg:col-span-6) */}
-                <div className="lg:col-span-6 bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm flex flex-col justify-between text-start">
-                  <div className="space-y-3 flex-grow flex flex-col min-h-0">
-                    <div className="flex justify-between items-center pb-2 border-b border-slate-100">
-                      <div className="flex items-center gap-2">
-                        <span className="w-5 h-5 flex items-center justify-center rounded-lg bg-pink-50 text-[#D20A50]">
-                          <Newspaper className="w-3.5 h-3.5" />
-                        </span>
-                        <h4 className="font-extrabold text-slate-900 text-sm tracking-tight">일자별 뉴스 실시간 피드</h4>
-                      </div>
-                      <span className="text-[10px] text-slate-400 font-mono">Query: "{naverSearchQuery}"</span>
-                    </div>
-
-                    {/* Scrollable list grouped by dates */}
-                    <div className="space-y-4 max-h-[340px] overflow-y-auto pr-1 flex-grow scrollbar-thin">
-                      {isNaverNewsLoading ? (
-                        <div className="py-20 flex flex-col items-center justify-center gap-2 text-xs text-slate-400">
-                          <Loader2 className="w-8 h-8 animate-spin text-[#D20A50]" />
-                          <span>네이버 뉴스 취합 중...</span>
-                        </div>
-                      ) : Object.keys(groupedNews).length > 0 ? (
-                        Object.entries(groupedNews).map(([date, articles]) => (
-                          <div key={date} className="space-y-2 border-b border-slate-100/50 pb-3 last:border-0 last:pb-0">
-                            {/* Date Group Division line as specified */}
-                            <div className="sticky top-0 bg-white/95 backdrop-blur-xs py-1 z-5 flex items-center gap-2">
-                              <span className="text-[11px] font-extrabold text-slate-900 font-sans tracking-tight bg-slate-100 px-2 py-0.5 rounded">
-                                📅 {date}
-                              </span>
-                              <div className="flex-grow h-[1px] bg-slate-200/60" />
-                            </div>
-
-                            {/* News articles for this date group */}
-                            <div className="space-y-2 pl-2">
-                              {articles.slice(0, 3).map((news, idx) => {
-                                const isOverseas = news.origin === "해외";
-                                return (
-                                  <div 
-                                    key={idx}
-                                    onClick={() => handleOpenNewsDetail(news)}
-                                    className="group cursor-pointer p-2 rounded-xl hover:bg-pink-50/20 transition-all text-start"
-                                  >
-                                    <h5 className="text-xs font-bold text-slate-800 leading-snug group-hover:text-[#D20A50] transition-colors flex items-start gap-1">
-                                      <span className={`text-[10px] shrink-0 font-extrabold px-1.5 py-0.2 rounded mt-0.5 ${
-                                        isOverseas ? "bg-amber-100 text-amber-800" : "bg-blue-100 text-blue-800"
-                                      }`}>
-                                        {isOverseas ? "[해외]" : "[국내]"}
-                                      </span>
-                                      <span className="line-clamp-2">{(news.title || "").replace(/<b>/g, "").replace(/<\/b>/g, "")}</span>
-                                    </h5>
-                                    <div className="flex items-center gap-2 text-[10px] text-slate-400 font-mono mt-1 pl-1">
-                                      <span>출처: {news.source}</span>
-                                    </div>
-                                  </div>
-                                );
-                              })}
-                            </div>
-                          </div>
-                        ))
-                      ) : (
-                        <div className="py-20 text-center text-xs text-slate-400">
-                          실시간 검색 뉴스가 존재하지 않습니다.
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="pt-3 border-t border-slate-100 flex items-center justify-end">
                     <button 
                       onClick={() => setActiveTab("DailyNews")}
-                      className="text-xs text-[#D20A50] font-bold hover:underline cursor-pointer"
+                      className="text-xs font-bold text-slate-400 hover:text-[#D20A50] transition cursor-pointer"
                     >
-                      전체 아카이브 및 실시간 요약 엔진 →
+                      전체 뉴스 보기
                     </button>
                   </div>
-                </div>
 
-                {/* CARD 4: Recommended course list (Bento lg:col-span-6) */}
-                <div className="lg:col-span-6 bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm flex flex-col justify-between text-start">
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center pb-2 border-b border-slate-100">
-                      <div className="flex items-center gap-2">
-                        <span className="w-5 h-5 flex items-center justify-center rounded-lg bg-pink-50 text-[#D20A50]">
-                          <BookOpen className="w-3.5 h-3.5" />
-                        </span>
-                        <h4 className="font-extrabold text-slate-900 text-sm tracking-tight">추천 학술 교육 과정</h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    {/* news card 1 */}
+                    <div 
+                      onClick={() => {
+                        const news = {
+                          title: "젠슨 황 \"HBM 더 달라\" 요청하더니...삼전닉...",
+                          description: "통해 HBM3E·HBM4·HBM4E 공급 방안을 논의했다. 올해 회의에서는 HBM 판매 확대, 주요 거래선 대응이 핵심... SK하이닉스는 지난 18일...",
+                          pubDate: "2026-06-23",
+                          source: "전자신문",
+                          origin: "국내",
+                          link: "https://www.etnews.com"
+                        };
+                        handleOpenNewsDetail(news);
+                      }}
+                      className="group bg-white rounded-[32px] p-5 border border-slate-100 shadow-xs hover:shadow-md transition duration-300 flex flex-col justify-between cursor-pointer space-y-4 text-start"
+                    >
+                      <div className="space-y-4">
+                        <div className="w-full h-40 rounded-[24px] overflow-hidden bg-slate-100">
+                          <img 
+                            src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=800" 
+                            alt="Semiconductor" 
+                            className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                            referrerPolicy="no-referrer"
+                          />
+                        </div>
+                        <div className="flex justify-between items-center text-[10px] font-bold">
+                          <span className="bg-pink-50 text-[#D20A50] px-2.5 py-1 rounded-lg">기술</span>
+                          <span className="text-slate-400">2026-06-23</span>
+                        </div>
+                        <h3 className="text-sm font-black text-slate-900 tracking-tight leading-snug group-hover:text-[#D20A50] transition-colors line-clamp-1">
+                          젠슨 황 "HBM 더 달라" 요청하더니...삼전닉...
+                        </h3>
+                        <p className="text-[11px] text-slate-500 leading-relaxed line-clamp-2">
+                          통해 HBM3E·HBM4·HBM4E 공급 방안을 논의했다. 올해 회의에서는 HBM 판매 확대, 주요 거래선 대응이 핵심... SK하이닉스는 지난 18일...
+                        </p>
                       </div>
-                      <span className="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-bold">인기순</span>
                     </div>
 
-                    {/* Course list representation with clear badges as specified */}
-                    <div className="space-y-3.5 max-h-[340px] overflow-y-auto pr-1">
-                      {ENHANCED_COURSES.slice(0, 4).map((c) => {
-                        const isPrimaryHighlight = diagnosedCourseIds.length > 0 && diagnosedCourseIds.includes(c.id);
-                        return (
-                          <div 
-                            key={c.id}
-                            className={`p-3.5 rounded-2xl border transition relative overflow-hidden cursor-pointer ${
-                              isPrimaryHighlight 
-                                ? "bg-pink-50/50 border-brand-200 font-medium" 
-                                : "bg-slate-50/60 border-slate-200/60 hover:border-slate-300"
-                            }`}
-                            onClick={() => {
-                              setActiveCourseChat(c);
-                              setActiveTab("AIClassroom");
-                            }}
-                          >
-                            <div className="flex justify-between items-start gap-2 mb-1.5">
-                              <h5 className="text-xs font-black text-slate-900 leading-tight">
-                                {c.title}
-                              </h5>
-                              <span className={`text-[10px] font-bold shrink-0 px-2 py-0.5 rounded-md ${
-                                c.costType === "무료" ? "bg-emerald-100 text-emerald-800" : "bg-purple-100 text-purple-800"
-                              }`}>
-                                {c.costType}
-                              </span>
-                            </div>
-                            
-                            <p className="text-[11px] text-slate-500 line-clamp-1 leading-normal mb-2">
-                              {c.description}
-                            </p>
-
-                            <div className="flex flex-wrap items-center gap-2 text-[10px] text-slate-400 font-mono">
-                              <span className="bg-slate-200/60 text-slate-700 px-1.5 py-0.5 rounded">
-                                주최: {c.provider}
-                              </span>
-                              <span>•</span>
-                              <span>기간: {c.duration}</span>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  <div className="pt-3 border-t border-slate-100 flex items-center justify-end">
-                    <button 
-                      onClick={() => setActiveTab("AIClassroom")}
-                      className="text-xs text-[#D20A50] font-bold hover:underline cursor-pointer"
+                    {/* news card 2 */}
+                    <div 
+                      onClick={() => {
+                        const news = {
+                          title: "모태펀드-국민성장펀드 '투자 이어달리기' 가동...",
+                          description: "정부가 모태펀드와 국민성장펀드를 연계해 벤처·스타트업이 글로벌 유니콘을 넘어 빅테크 기업으로... 기틀을 확고히 안착시키고, 혁신기업의 성장...",
+                          pubDate: "2026-06-23",
+                          source: "한국경제",
+                          origin: "국내",
+                          link: "https://www.hankyung.com"
+                        };
+                        handleOpenNewsDetail(news);
+                      }}
+                      className="group bg-white rounded-[32px] p-5 border border-slate-100 shadow-xs hover:shadow-md transition duration-300 flex flex-col justify-between cursor-pointer space-y-4 text-start"
                     >
-                      강의 찾기 & AI 코치 전용 챗방 →
-                    </button>
+                      <div className="space-y-4">
+                        <div className="w-full h-40 rounded-[24px] overflow-hidden bg-slate-100">
+                          <img 
+                            src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=800" 
+                            alt="Meeting Speaker" 
+                            className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                            referrerPolicy="no-referrer"
+                          />
+                        </div>
+                        <div className="flex justify-between items-center text-[10px] font-bold">
+                          <span className="bg-pink-50 text-[#D20A50] px-2.5 py-1 rounded-lg">규제</span>
+                          <span className="text-slate-400">2026-06-23</span>
+                        </div>
+                        <h3 className="text-sm font-black text-slate-900 tracking-tight leading-snug group-hover:text-[#D20A50] transition-colors line-clamp-1">
+                          모태펀드-국민성장펀드 '투자 이어달리기' 가동...
+                        </h3>
+                        <p className="text-[11px] text-slate-500 leading-relaxed line-clamp-2">
+                          정부가 모태펀드와 국민성장펀드를 연계해 벤처·스타트업이 글로벌 유니콘을 넘어 빅테크 기업으로... 기틀을 확고히 안착시키고, 혁신기업의 성장...
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
+              </div>
+
+              {/* BAND 3: CSES AI HUB 플랫폼 가이드 */}
+              <div className="space-y-6 pt-4 text-start">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <HelpCircle className="w-5 h-5 text-slate-400 shrink-0" />
+                    <h2 className="text-xl font-black text-slate-900 tracking-tight">CSES AI HUB 플랫폼 가이드</h2>
+                  </div>
+                  <p className="text-slate-400 text-xs md:text-sm font-medium">
+                    연구 효율을 극대화하는 5가지 지능형 핵심 기능을 확인해보세요.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+                  {/* Guide Card 1 */}
+                  <div className="bg-white rounded-[32px] p-6 border border-slate-100 shadow-xs flex flex-col justify-between text-start min-h-[280px]">
+                    <div className="space-y-4">
+                      <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center">
+                        <HomeIcon className="w-5 h-5 text-slate-500" />
+                      </div>
+                      <h4 className="font-extrabold text-[#D20A50] text-sm">01. 홈 (Home)</h4>
+                      <p className="text-[11px] text-slate-500 leading-relaxed font-semibold">
+                        AI 뉴스, 교육 역량 진단 등 플랫폼의 모든 주요 서비스를 한눈에 모아보는 편리한 시작 화면입니다.
+                      </p>
+                    </div>
+                    <button 
+                      onClick={() => setActiveTab("Home")}
+                      className="text-[11px] font-bold text-[#D20A50] hover:underline pt-4 text-left cursor-pointer"
+                    >
+                      홈 바로가기 &gt;
+                    </button>
+                  </div>
+
+                  {/* Guide Card 2 */}
+                  <div className="bg-white rounded-[32px] p-6 border border-slate-100 shadow-xs flex flex-col justify-between text-start min-h-[280px]">
+                    <div className="space-y-4">
+                      <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center">
+                        <BookOpen className="w-5 h-5 text-slate-500" />
+                      </div>
+                      <h4 className="font-extrabold text-[#D20A50] text-sm">02. AI 교육</h4>
+                      <p className="text-[11px] text-slate-500 leading-relaxed font-semibold">
+                        나의 AI 활용 능력을 간단한 설문으로 진단하고, 비전공자부터 전문가 수준까지 딱 맞는 맞춤 강좌를 추천받습니다.
+                      </p>
+                    </div>
+                    <button 
+                      onClick={handleStartSurvey}
+                      className="text-[11px] font-bold text-[#D20A50] hover:underline pt-4 text-left cursor-pointer"
+                    >
+                      자가진단 시도 &gt;
+                    </button>
+                  </div>
+
+                  {/* Guide Card 3 */}
+                  <div className="bg-white rounded-[32px] p-6 border border-slate-100 shadow-xs flex flex-col justify-between text-start min-h-[280px]">
+                    <div className="space-y-4">
+                      <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center">
+                        <Newspaper className="w-5 h-5 text-slate-500" />
+                      </div>
+                      <h4 className="font-extrabold text-[#D20A50] text-sm">03. AI 뉴스</h4>
+                      <p className="text-[11px] text-slate-500 leading-relaxed font-semibold">
+                        어렵고 복잡한 글로벌 인공지능 소식과 트렌드 정책자료를 국문 3줄 핵심 요약으로 편리하게 파악합니다.
+                      </p>
+                    </div>
+                    <button 
+                      onClick={() => setActiveTab("DailyNews")}
+                      className="text-[11px] font-bold text-[#D20A50] hover:underline pt-4 text-left cursor-pointer"
+                    >
+                      뉴스 전체 보기 &gt;
+                    </button>
+                  </div>
+
+                  {/* Guide Card 4 */}
+                  <div className="bg-white rounded-[32px] p-6 border border-slate-100 shadow-xs flex flex-col justify-between text-start min-h-[280px]">
+                    <div className="space-y-4">
+                      <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center">
+                        <Database className="w-5 h-5 text-slate-500" />
+                      </div>
+                      <h4 className="font-extrabold text-[#D20A50] text-sm">04. AI DB</h4>
+                      <p className="text-[11px] text-slate-500 leading-relaxed font-semibold">
+                        국내외 다양한 전문 연구 기관들의 AI 관련 사회적 가치(SV) 트렌드 분석 리포트, 측정 연구 자료 등의 핵심 보고서를 수합해 둔 라이브러리입니다.
+                      </p>
+                    </div>
+                    <button 
+                      onClick={() => setActiveTab("DeepInsight_DB")}
+                      className="text-[11px] font-bold text-[#D20A50] hover:underline pt-4 text-left cursor-pointer"
+                    >
+                      보고서 탐색 &gt;
+                    </button>
+                  </div>
+
+                  {/* Guide Card 5 */}
+                  <div className="bg-white rounded-[32px] p-6 border border-slate-100 shadow-xs flex flex-col justify-between text-start min-h-[280px]">
+                    <div className="space-y-4">
+                      <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center">
+                        <Terminal className="w-5 h-5 text-slate-500" />
+                      </div>
+                      <h4 className="font-extrabold text-[#D20A50] text-sm">05. AI 프롬프트</h4>
+                      <p className="text-[11px] text-slate-500 leading-relaxed font-semibold">
+                        다양한 연구 시나리오에 즉시 투입 가능한 검증된 프롬프트 카드로 원내 실무 속도를 두 배로 증가시킵니다.
+                      </p>
+                    </div>
+                    <button 
+                      onClick={() => setActiveTab("DeepInsight_Prompt")}
+                      className="text-[11px] font-bold text-[#D20A50] hover:underline pt-4 text-left cursor-pointer"
+                    >
+                      프롬프트 실행 &gt;
+                    </button>
+                  </div>
+                </div>
               </div>
 
             </div>
@@ -1153,8 +1063,8 @@ export default function App() {
                           className={`flex ${isModel ? "justify-start" : "justify-end"} items-start gap-2.5`}
                         >
                           {isModel && (
-                            <div className="w-7 h-7 rounded-lg bg-[#D20A50] text-white flex items-center justify-center font-bold text-xs shrink-0 mt-1 shadow">
-                              🤖
+                            <div className="w-7 h-7 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center shrink-0 mt-1 shadow-sm border border-slate-200">
+                              <Sparkles className="w-3.5 h-3.5" />
                             </div>
                           )}
                           <div className={`max-w-[85%] rounded-2xl p-3 text-xs leading-relaxed ${
@@ -1202,225 +1112,466 @@ export default function App() {
             </div>
           )}
 
-          {/* TAB 4: Deep Insight Menu (Prompts console & reports spreadsheet DB) */}
-          {activeTab === "DeepInsight" && (
-            <div className="space-y-6" id="view-deep-insight">
+          {/* TAB 4-A: AI 프롬프트 실습 콘솔 */}
+          {activeTab === "DeepInsight_Prompt" && (
+            <div className="space-y-6 text-start" id="view-deep-insight-prompt">
               
-              {/* Core selection buttons */}
-              <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-6 text-start">
+              {/* Banner Section */}
+              <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <div className="space-y-1">
-                  <span className="text-[10px] font-black text-[#D20A50] uppercase tracking-wider block">Specialist Tools Package</span>
-                  <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">심층 인사이트 메뉴</h2>
+                  <span className="text-[10px] font-black text-[#D20A50] uppercase tracking-wider block">Specialist LLM Tools</span>
+                  <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">AI 프롬프트 실습 콘솔</h2>
                   <p className="text-slate-500 text-xs md:text-sm">
-                    논문 초록 핵심 번역, 홍보 자료 언론 기안 작성 대행 및 세계 공인 가치 데이터 세트를 조회하고 원터치 CSV로 백업받기 가능합니다.
+                    논문 초록 핵심 국문 요약 번역, SDGs 공익 기안, 언론 홍보 자료 원고 초안 생성 등 목적 별 최적화 특화 원클릭 지원.
                   </p>
                 </div>
               </div>
 
-              {/* Grid block organizing tools */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                
-                {/* TOOL MODULE A: AI Prompt Console (lg:col-span-6) */}
-                <div className="lg:col-span-6 bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm flex flex-col justify-between text-start space-y-4">
-                  <div className="space-y-2">
-                    <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-1.5">
-                      <Terminal className="w-5 h-5 text-[#D20A50]" />
-                      특화 AI 프롬프트 실습 콘솔
-                    </h3>
-                    <p className="text-slate-500 text-xs">
-                      연구원 및 실무진 맞춤 템플릿입니다. 원하는 카드를 지정하고 하단 본문에 입력 내용을 기안 후 전송하십시오.
-                    </p>
-                  </div>
-
-                  {/* Selector tabs */}
-                  <div className="grid grid-cols-3 gap-2">
-                    {[
-                      { id: "translator", label: "📄 학술 초록 번역", desc: "English to Korean" },
-                      { id: "writer", label: "✍️ 보도자료 기안", desc: "홍보 원고 초고 작성" },
-                      { id: "advisor", label: "🧭 기획안 어드바이저", desc: "SDGs 임팩트 고도화" }
-                    ].map((tab) => (
-                      <button
-                        key={tab.id}
-                        onClick={() => {
-                          setActivePromptTemplate(tab.id);
-                          setPromptInputText("");
-                          setPromptExecutionResult("");
-                        }}
-                        className={`p-2.5 rounded-2xl border text-center transition cursor-pointer ${
-                          activePromptTemplate === tab.id 
-                            ? "bg-pink-50 border-[#D20A50] text-[#D20A50] font-black" 
-                            : "bg-slate-50 border-slate-200/60 text-slate-600 hover:border-slate-300"
-                        }`}
-                      >
-                        <span className="text-xs block leading-tight">{tab.label}</span>
-                        <span className="text-[10px] text-slate-400 font-normal">{tab.desc}</span>
-                      </button>
-                    ))}
-                  </div>
-
-                  {/* Form console input */}
-                  <div className="space-y-2">
-                    <label className="text-[10.5px] font-bold text-slate-400 block uppercase">
-                      선택된 템플릿: {currentTemplateObj ? currentTemplateObj.title : "번역기"}
-                    </label>
-                    <textarea 
-                      placeholder={currentTemplateObj ? currentTemplateObj.placeholder : "여기에 영문 초록이나 기획 개요를 작성해 주십시오..."}
-                      value={promptInputText}
-                      onChange={(e) => setPromptInputText(e.target.value)}
-                      rows={5}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-xs outline-none focus:bg-white focus:border-[#D20A50] transition leading-relaxed"
-                    />
-                  </div>
-
-                  <button 
-                    onClick={handleExecutePrompt}
-                    disabled={isPromptLoading || !promptInputText.trim()}
-                    className="w-full bg-[#D20A50] hover:bg-pink-650 text-white font-extrabold text-xs py-3.5 rounded-xl shadow transition duration-200 flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
-                  >
-                    {isPromptLoading ? (
-                      <>
-                        <Loader2 className="w-4 h-4 animate-spin text-white" />
-                        <span>수석 AI가 심층 분석 보고서를 성화하는 장치를 작동 중...</span>
-                      </>
-                    ) : (
-                      <>
-                        <Sparkles className="w-4 h-4 text-pink-200 animate-spin-slow" />
-                        <span>Gemini AI 학술 분석 실행하기</span>
-                      </>
-                    )}
-                  </button>
-
-                  {/* Output block display */}
-                  {promptExecutionResult && (
-                    <div className="bg-slate-950 text-slate-100 rounded-2xl p-4 space-y-3 font-medium relative border border-slate-800">
-                      <div className="flex justify-between items-center pb-2 border-b border-white/5">
-                        <span className="text-[9px] text-[#D20A50] font-bold tracking-widest uppercase">ANALYSIS RESULT OUTPUT</span>
-                        <button 
-                          onClick={() => {
-                            handleCopyToClipboard(promptExecutionResult);
-                          }}
-                          className="text-[10px] text-slate-400 hover:text-white inline-flex items-center gap-0.5"
-                        >
-                          {isCopied ? <span className="text-emerald-400">복사완료</span> : <><Copy className="w-3.5 h-3.5" /> 복사</>}
-                        </button>
-                      </div>
-                      <p className="text-xs whitespace-pre-wrap leading-relaxed font-sans">{promptExecutionResult}</p>
-                    </div>
-                  )}
-
+              {/* Main Prompt Tool Layout */}
+              <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm space-y-6">
+                <div className="space-y-2">
+                  <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-1.5">
+                    <Terminal className="w-5 h-5 text-[#D20A50]" />
+                    연구원 특화 AI 프롬프트 선택
+                  </h3>
+                  <p className="text-slate-400 text-xs">
+                    하고 싶으신 연구 혹은 보도 서신 업무를 설정해 주십시오. 특화 템플릿 프레임이 즉각 조각됩니다.
+                  </p>
                 </div>
 
-                {/* TOOL MODULE B: Research Library Spreadsheet DB (lg:col-span-6) */}
-                <div className="lg:col-span-6 bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm flex flex-col justify-between text-start space-y-4">
-                  
-                  <div className="space-y-2">
-                    <h3 className="text-base font-extrabold text-slate-900 flex items-center justify-between">
-                      <span className="flex items-center gap-1.5">
-                        <Database className="w-5 h-5 text-[#D20A50]" />
-                        SROI 글로벌 리서치 데이터베이스
+                {/* Grid Template Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {[
+                    { id: "translator", label: "학술 초록 번역", desc: "영문 논문 초록을 깔끔한 학술 용어를 구사한 국문으로 오역 없이 초고 정밀 이식합니다.", icon: FileText },
+                    { id: "writer", label: "보도자료 기안", desc: "원하시는 보도 취지나 개요를 던져주시면, 육하원칙 문장 구성원칙을 고수한 세련된 홍보 원고를 자동 작필합니다.", icon: BookOpen },
+                    { id: "advisor", label: "기획안 어드바이저", desc: "추진하시는 사회 가치 증진 프로젝트 요점을 기획 시안 형식으로 수합하여 SDGs 임팩트 핵심 강화점을 고도 구상합니다.", icon: SlidersHorizontal }
+                  ].map((tab) => (
+                    <button
+                      key={tab.id}
+                      onClick={() => {
+                        setActivePromptTemplate(tab.id);
+                        setPromptInputText("");
+                        setPromptExecutionResult("");
+                      }}
+                      className={`p-5 rounded-2xl border text-start transition cursor-pointer flex flex-col gap-2 relative ${
+                        activePromptTemplate === tab.id 
+                          ? "bg-pink-50/50 border-[#D20A50] text-[#D20A50] font-black" 
+                          : "bg-slate-50 border-slate-200/60 text-slate-600 hover:border-slate-300"
+                      }`}
+                    >
+                      <span className="text-xs font-black flex items-center gap-1.5 leading-tight">
+                        <tab.icon className={`w-3.5 h-3.5 ${activePromptTemplate === tab.id ? "text-[#D20A50]" : "text-slate-400"}`} />
+                        {tab.label}
                       </span>
-                      <button 
-                        onClick={handleDownloadCSV}
-                        className="py-1.5 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10.5px] font-extrabold rounded-xl transition inline-flex items-center gap-1 cursor-pointer"
-                        title="CSV 테이블 내려받기"
-                      >
-                        <Download className="w-3.5 h-3.5 text-[#D20A50]" />
-                        엑셀 CSV 내보내기
-                      </button>
-                    </h3>
-                    <p className="text-slate-500 text-xs">
-                      유네스코, CSES, 세계포럼(WEF)가 제안한 측정 모델 데이터를 한곳에 동기화하였습니다. 다운로드 수 혹은 연도 정렬 지원.
-                    </p>
-                  </div>
-
-                  {/* Filters bar */}
-                  <div className="grid grid-cols-3 gap-2">
-                    <div>
-                      <input 
-                        type="text" 
-                        placeholder="리서치 검색..." 
-                        value={reportSearchQuery}
-                        onChange={(e) => setReportSearchQuery(e.target.value)}
-                        className="w-full bg-slate-50 text-[11px] p-2 rounded-xl border border-slate-200 outline-none"
-                      />
-                    </div>
-                    <div>
-                      <select
-                        value={reportFilterCategory}
-                        onChange={(e) => setReportFilterCategory(e.target.value)}
-                        className="w-full bg-slate-50 text-[11px] p-2.5 rounded-xl border border-slate-200 outline-none font-bold"
-                      >
-                        <option value="전체">국가 구분 (전체)</option>
-                        <option value="국내">국내 기관</option>
-                        <option value="국외">국외 글로벌</option>
-                      </select>
-                    </div>
-                    <div>
-                      <select
-                        value={reportSortKey}
-                        onChange={(e) => setReportSortKey(e.target.value as any)}
-                        className="w-full bg-slate-50 text-[11px] p-2.5 rounded-xl border border-slate-200 outline-none font-bold"
-                      >
-                        <option value="downloads">다운로드순 정렬</option>
-                        <option value="publishedYear">최신 발행도순</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  {/* DB table listing */}
-                  <div className="space-y-3.5 max-h-[380px] overflow-y-auto pr-1">
-                    {filteredReports.map((report) => (
-                      <div 
-                        key={report.id}
-                        className="p-3.5 rounded-2xl border border-slate-150 bg-slate-50/50 hover:bg-white transition flex items-start gap-3 justify-between"
-                      >
-                        <div className="space-y-1.5 flex-grow min-w-0">
-                          <div className="flex items-center gap-1.5 flex-wrap">
-                            <span className={`text-[9.5px] font-extrabold px-2 py-0.2 rounded ${
-                              report.category === "국내" ? "bg-blue-50 text-blue-800" : "bg-purple-50 text-purple-800"
-                            }`}>
-                              {report.category}
-                            </span>
-                            <span className="text-[10px] text-slate-400 font-bold">{report.institution}</span>
-                          </div>
-                          
-                          <h4 className="text-xs font-black text-slate-900 leading-snug truncate">
-                            {report.title}
-                          </h4>
-                          
-                          <p className="text-[10.5px] text-slate-500 leading-relaxed font-normal">
-                            {report.abstract}
-                          </p>
-
-                          <div className="flex flex-wrap gap-1">
-                            {report.tags.map((tag, i) => (
-                              <span key={i} className="text-[9.5px] bg-slate-200/50 text-slate-600 px-1.5 py-0.2 rounded font-medium">#{tag}</span>
-                            ))}
-                          </div>
-                        </div>
-
-                        <div className="flex flex-col items-end justify-between self-stretch shrink-0 text-right text-mono text-[10px] text-slate-400">
-                          <span>{report.publishedYear}년</span>
-                          <span className="bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded-md font-bold text-[9.5px] whitespace-nowrap">
-                            📥 {report.downloads.toLocaleString()}회
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                    {filteredReports.length === 0 && (
-                      <p className="text-center text-xs text-slate-400 py-10">일치하는 리서치 데이터베이스가 없습니다.</p>
-                    )}
-                  </div>
-
+                      <span className="text-[11px] text-slate-500 font-normal leading-relaxed">{tab.desc}</span>
+                      {activePromptTemplate === tab.id && (
+                        <span className="absolute right-3 top-3 w-2 h-2 rounded-full bg-[#D20A50]" />
+                      )}
+                    </button>
+                  ))}
                 </div>
+
+                {/* TextArea Console */}
+                <div className="space-y-3">
+                  <label className="text-[10.5px] font-bold text-slate-400 block uppercase">
+                    실행 템플릿 기재내용: {currentTemplateObj ? currentTemplateObj.title : "학술 번역기"}
+                  </label>
+                  <textarea 
+                    placeholder={currentTemplateObj ? currentTemplateObj.placeholder : "여기에 영문 초록이나 기획 개요를 작성해 주십시오..."}
+                    value={promptInputText}
+                    onChange={(e) => setPromptInputText(e.target.value)}
+                    rows={8}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 text-xs md:text-sm outline-none focus:bg-white focus:border-[#D20A50] transition leading-relaxed text-slate-800"
+                  />
+                </div>
+
+                <button 
+                  onClick={handleExecutePrompt}
+                  disabled={isPromptLoading || !promptInputText.trim()}
+                  className="w-full bg-[#D20A50] hover:bg-pink-600 text-white font-extrabold text-xs md:text-sm py-4 p-4 rounded-xl shadow transition duration-200 flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
+                >
+                  {isPromptLoading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin text-white" />
+                      <span>수석 AI가 영문 번역 및 임팩트 작화 분석 보고서를 성화하는 중...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="w-4 h-4 text-pink-200 animate-spin-slow" />
+                      <span>Gemini AI 학술 실무 지원 실행</span>
+                    </>
+                  )}
+                </button>
+
+                {/* Prompt Result Output */}
+                {promptExecutionResult && (
+                  <div className="bg-slate-900 text-slate-100 rounded-3xl p-6 space-y-4 font-medium relative border border-slate-800">
+                    <div className="flex justify-between items-center pb-3 border-b border-white/10">
+                      <span className="text-[10px] text-[#D20A50] font-black tracking-widest uppercase">ANALYSIS RESULT PROMPT OUTPUT</span>
+                      <button 
+                        onClick={() => {
+                          handleCopyToClipboard(promptExecutionResult);
+                        }}
+                        className="text-xs text-slate-400 hover:text-white inline-flex items-center gap-1 cursor-pointer"
+                      >
+                        {isCopied ? <span className="text-emerald-400 font-bold">✓ 클립보드 복사완료</span> : <><Copy className="w-4 h-4" /> 결과 복사하기</>}
+                      </button>
+                    </div>
+                    <p className="text-xs md:text-sm whitespace-pre-wrap leading-relaxed font-sans text-slate-200 font-semibold">{promptExecutionResult}</p>
+                  </div>
+                )}
 
               </div>
 
             </div>
           )}
 
+          {/* TAB 4-B: SROI 글로벌 리서치 데이터베이스 */}
+          {activeTab === "DeepInsight_DB" && (
+            <div className="space-y-6 text-start" id="view-deep-insight-db">
+              
+              {/* Banner Section */}
+              <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                <div className="space-y-1">
+                  <span className="text-[10px] font-black text-[#D20A50] uppercase tracking-wider block">Global SROI Database</span>
+                  <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">SROI 글로벌 리서치 데이터베이스</h2>
+                  <p className="text-slate-500 text-xs md:text-sm">
+                    유네스코, 사회적가치연구원(CSES), 세계경제포럼(WEF) 측량 데이터 세트 조회 및 실시간 클라이언트 테이블 원터치 내려받기.
+                  </p>
+                </div>
+                <button 
+                  onClick={handleDownloadCSV}
+                  className="py-3 px-5 bg-slate-900 text-white hover:bg-slate-850 text-xs font-extrabold rounded-xl transition inline-flex items-center gap-1.5 cursor-pointer shadow-sm"
+                  title="CSV 테이블 내려받기"
+                >
+                  <Download className="w-4 h-4 text-[#D20A50]" />
+                  엑셀 CSV 대용량 내보내기
+                </button>
+              </div>
+
+              {/* Advanced Filter Controller */}
+              <div className="bg-white p-5 rounded-3xl border border-slate-205 shadow-xs grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="space-y-1">
+                  <label className="text-[10px] font-black text-slate-400 block uppercase">리포트 단어 검색</label>
+                  <div className="relative">
+                    <input 
+                      type="text" 
+                      placeholder="제목, 기관명, 적요 검색..." 
+                      value={reportSearchQuery}
+                      onChange={(e) => setReportSearchQuery(e.target.value)}
+                      className="w-full bg-slate-50 text-xs px-3 py-3 pr-9 rounded-xl border border-slate-200 outline-none focus:bg-white focus:border-[#D20A50] transition"
+                    />
+                    <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[10px] font-black text-slate-400 block uppercase">연구 도표 구분</label>
+                  <select
+                    value={reportFilterCategory}
+                    onChange={(e) => setReportFilterCategory(e.target.value)}
+                    className="w-full bg-slate-50 text-xs p-3 px-3.5 rounded-xl border border-slate-200 outline-none font-bold"
+                  >
+                    <option value="전체">국가 구분 (전체)</option>
+                    <option value="국내">국내 기관 (CSES, 원외 포함)</option>
+                    <option value="국외">국외 글로벌 (WEF, UN, MIT 포함)</option>
+                  </select>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[10px] font-black text-slate-400 block uppercase">정렬 기준 정밀 조정</label>
+                  <select
+                    value={reportSortKey}
+                    onChange={(e) => setReportSortKey(e.target.value as any)}
+                    className="w-full bg-slate-50 text-xs p-3 px-3.5 rounded-xl border border-slate-200 outline-none font-bold"
+                  >
+                    <option value="downloads">다운로드 인기순 고속정렬</option>
+                    <option value="publishedYear">최신 정부/협회 간행물순</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Research Database list */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-4">
+                {filteredReports.map((report) => (
+                  <div 
+                    key={report.id}
+                    className="bg-white p-6 rounded-[32px] border border-slate-100 shadow-xs hover:border-[#D20A50]/40 transition flex flex-col justify-between gap-4 text-start"
+                  >
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center gap-2">
+                        <span className={`text-[10px] font-extrabold px-2.5 py-1 rounded-lg ${
+                          report.category === "국내" ? "bg-blue-50 text-blue-800" : "bg-[#D20A50]/10 text-[#D20A50]"
+                        }`}>
+                          {report.category === "국내" ? "국내 보고서" : "해외 보고서"}
+                        </span>
+                        <span className="text-xs text-slate-400 font-mono font-semibold">{report.publishedYear}년 발행</span>
+                      </div>
+
+                      <h3 className="text-sm font-black text-slate-900 leading-snug line-clamp-1">
+                        {report.title}
+                      </h3>
+
+                      <p className="text-[11px] text-slate-500 leading-relaxed font-semibold">
+                        {report.abstract}
+                      </p>
+
+                      <div className="flex flex-wrap gap-1 pt-1">
+                        {report.tags.map((tag, i) => (
+                          <span key={i} className="text-[10px] bg-slate-105 text-slate-600 px-2 py-0.5 rounded-lg font-medium">#{tag}</span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
+                      <span className="text-[11px] text-slate-400 font-bold">{report.institution}</span>
+                      <span className="bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg font-mono font-bold text-[10px] flex items-center gap-1">
+                        <Download className="w-3 h-3 text-slate-500" />
+                        {report.downloads.toLocaleString()}회 소집
+                      </span>
+                    </div>
+
+                  </div>
+                ))}
+              </div>
+
+              {filteredReports.length === 0 && (
+                <div className="text-center text-xs text-slate-400 py-20 bg-white border border-slate-200/80 rounded-3xl">
+                  일치하는 SROI 리서치 데이터베이스 간행물이 매치되지 않습니다. 다른 키워드를 입력해 주십시오.
+                </div>
+              )}
+
+            </div>
+          )}
+
+          {/* TAB 5: Guide View */}
+          {activeTab === "Guide" && (
+            <div className="space-y-6 text-start animate-fade-in" id="view-platform-guide">
+              {/* Main Banner */}
+              <div className="bg-gradient-to-br from-[#D20A50] via-[#b80543] to-[#800028] text-white rounded-[32px] p-6 md:p-8 shadow-lg shadow-pink-900/10">
+                <div className="max-w-3xl space-y-3">
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-white/15 text-pink-100 border border-white/20">
+                    <Sparkles className="w-3 h-3 text-pink-200" />
+                    USER MANUAL
+                  </span>
+                  <h2 className="text-xl md:text-2xl font-black tracking-tight leading-snug">
+                    CSES AI Insight Hub 플랫폼 종합 가이드
+                  </h2>
+                  <p className="text-pink-100/90 text-xs leading-relaxed font-semibold">
+                    빅데이터 기술과 최신 대형언어모델(LLM)을 활용한 사회적 가치(SROI) 트렌드 자동화 및 학술 리서치 고도화를 지원하는 실무 가이드입니다.
+                  </p>
+                </div>
+              </div>
+
+              {/* Main Content Grid */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                
+                {/* LEFT: STEP GUIDE */}
+                <div className="lg:col-span-8 space-y-6">
+                  
+                  <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm space-y-6">
+                    <h3 className="font-extrabold text-slate-900 text-sm md:text-base border-b border-slate-100 pb-3 flex items-center gap-2">
+                      <SlidersHorizontal className="w-4.5 h-4.5 text-[#D20A50]" />
+                      핵심 기능 기동 및 이용 가이드
+                    </h3>
+
+                    <div className="relative border-l-2 border-slate-100 ml-4 pl-6 space-y-8">
+                      
+                      {/* Step 1 */}
+                      <div className="relative">
+                        <span className="absolute -left-10 top-0.5 w-7 h-7 rounded-full bg-pink-100 text-[#D20A50] border-2 border-white font-mono text-xs font-black flex items-center justify-center shadow-sm">
+                          1
+                        </span>
+                        <div className="space-y-2">
+                          <div className="flex flex-wrap items-center gap-2 font-extrabold text-slate-800 text-sm">
+                            <span>실시간 포털 뉴스 수집 & 실시간 AI 임팩트 브리핑 (Daily News)</span>
+                            <span className="text-[10px] bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded font-bold">#트렌드 분석</span>
+                          </div>
+                          <p className="text-slate-500 text-xs leading-relaxed">
+                            네이버 뉴스 실시간 연동 포털에서 <b>특정 키워드(#사회적가치 인공지능, #ESG AI 등)</b>로 발행된 최신 기사를 수집합니다. 
+                            뉴스 목록에서 기사를 선택하면 우측 패널에서 Gemini AI 엔진이 기사의 원문을 해독하여 <b>SROI 및 ESG 관점의 1줄 에센셜 통찰 요점</b>을 3초 만에 생성해 제공합니다.
+                          </p>
+                          <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200/60 font-sans space-y-2 max-w-xl">
+                            <div className="flex items-center justify-between text-[11px] text-slate-400 pb-1 border-b border-slate-100">
+                              <span>뉴스 추출 시뮬레이션</span>
+                              <span className="text-green-600 font-bold flex items-center gap-1">● ACTIVE</span>
+                            </div>
+                            <div className="p-2 py-1.5 bg-white rounded-lg border border-slate-100 text-xs font-bold text-slate-800 flex items-center justify-between">
+                              <span className="truncate flex items-center gap-1.5">
+                                <Newspaper className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                                기업 ESG 탄소 배출량 관리, AI 기술과 만나 검증 고도화 실현
+                              </span>
+                              <button onClick={() => setActiveTab("DailyNews")} className="text-[10px] text-[#D20A50] font-bold hover:underline whitespace-nowrap ml-2">실습하기 →</button>
+                            </div>
+                            <div className="bg-white/70 rounded-xl p-2.5 border border-slate-100 text-[11px] leading-relaxed text-slate-600 space-y-1">
+                              <span className="text-[9px] font-extrabold uppercase text-[#D20A50] tracking-wider block">GEMINI CORE LOGIC</span>
+                              <p className="font-semibold text-slate-700">"본 기사는 AI를 활용한 신속한 온실가스 저감 성과 기재 및 SROI 측정 오차 축소 혁신 동향을 규명하고 있습니다."</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Step 2 */}
+                      <div className="relative">
+                        <span className="absolute -left-10 top-0.5 w-7 h-7 rounded-full bg-pink-100 text-[#D20A50] border-2 border-white font-mono text-xs font-black flex items-center justify-center shadow-sm">
+                          2
+                        </span>
+                        <div className="space-y-2">
+                          <div className="flex flex-wrap items-center gap-2 font-extrabold text-slate-800 text-sm">
+                            <span>자가진단 기획 & 초정밀 지식 큐레이션 코칭 (AI Classroom)</span>
+                            <span className="text-[10px] bg-indigo-100 text-indigo-800 px-1.5 py-0.5 rounded font-bold">#교육 로드맵</span>
+                          </div>
+                          <p className="text-slate-500 text-xs leading-relaxed">
+                            나만의 리서치 레벨과 연구 목적을 체크하는 <b>3단계 자가진단(Survey)</b>을 진행합니다. 
+                            진단이 종료되면 최적 학술 과정 1위가 특별 마킹되어 상단에 고정됩니다. 해당 과목을 클릭하면 전용 학습 챗방이 활성화되어 <b>AI 튜터와 커리큘럼 계획, 개념 질문 대화</b>를 실시간 1:1로 나눌 수 있습니다.
+                          </p>
+                          <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200/60 font-sans space-y-3 max-w-xl">
+                            <div className="flex items-center justify-between text-[11px] text-slate-400 pb-1 border-b border-slate-100">
+                              <span>학습 매칭 시뮬레이션</span>
+                              <span className="text-indigo-600 font-bold">● ROADMAP LOADED</span>
+                            </div>
+                            <div className="grid grid-cols-2 gap-2 text-[11px]">
+                              <div className="p-3 bg-white rounded-xl border border-pink-200 shadow-xs relative">
+                                <span className="absolute top-1 right-2 text-[8px] bg-pink-100 text-[#D20A50] px-1 rounded font-bold">최적추천</span>
+                                <p className="font-extrabold text-slate-800 truncate">SROI 화폐계측 초급 수료 교육</p>
+                                <p className="text-slate-400 text-[10px] mt-0.5">난이도: 입문자 코스</p>
+                              </div>
+                              <div className="p-3 bg-white/45 rounded-xl border border-slate-100">
+                                <p className="font-extrabold text-slate-400 truncate">임팩트 평가 전문가 워크숍</p>
+                                <p className="text-slate-400 text-[10px] mt-0.5">난이도: 숙련 실무자</p>
+                              </div>
+                            </div>
+                            <button onClick={() => setActiveTab("AIClassroom")} className="w-full text-center py-2 bg-white hover:bg-slate-100 border border-slate-200 text-slate-600 rounded-xl text-xs font-bold transition">
+                              강의실로 이동하여 자가진단 수행하기 🎯
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Step 3 */}
+                      <div className="relative">
+                        <span className="absolute -left-10 top-0.5 w-7 h-7 rounded-full bg-pink-100 text-[#D20A50] border-2 border-white font-mono text-xs font-black flex items-center justify-center shadow-sm">
+                          3
+                        </span>
+                        <div className="space-y-2">
+                          <div className="flex flex-wrap items-center gap-2 font-extrabold text-slate-800 text-sm">
+                            <span>전문 번역·보도기획 프롬프트 실증 & 가치 DB 소장 (Deep Insight)</span>
+                            <span className="text-[10px] bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-bold">#리서치 보정</span>
+                          </div>
+                          <p className="text-slate-500 text-xs leading-relaxed">
+                            전문 학술 작업을 위한 <b>기획서 보충용 프롬프트 템플릿(초록 영역 번역, 언론 보도자료 초안)</b> 콘솔을 가동합니다. 
+                            필요한 포맷 카드를 지정하고 텍스트만 채워 넣으면 전문가 수준으로 정밀 보정된 기안문을 완성할 수 있으며, 하단의 <b>공인 SROI 계측 데이터셋 정보</b>는 필터링하여 윈도우 원클릭 CSV 엑셀 백업본으로 직접 다운로드할 수 있습니다.
+                          </p>
+                          <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200/60 font-sans space-y-2 max-w-xl">
+                            <div className="flex items-center justify-between text-[11px] text-slate-400">
+                              <span>CSV 엑셀 일괄 추출 시뮬레이션</span>
+                              <span className="text-amber-600 font-bold">● DATASHEET ACTIVE</span>
+                            </div>
+                            <div className="bg-white p-3 rounded-xl border border-slate-200/50 flex items-center justify-between text-xs font-bold text-slate-700">
+                              <span className="flex items-center gap-2 truncate">
+                                <Database className="w-4 h-4 text-slate-400 shrink-0" />
+                                CSES_SROI_Report_Archive_2026.csv
+                              </span>
+                              <button onClick={() => setActiveTab("DeepInsight_DB")} className="px-3 py-1.5 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition text-[10px] shrink-0 font-bold">
+                                즉시 백업 받기
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+
+                </div>
+
+                {/* RIGHT: PRO TIPS */}
+                <div className="lg:col-span-4 space-y-6">
+                  
+                  <div className="bg-gradient-to-b from-slate-900 to-slate-950 text-white rounded-3xl p-6 border border-slate-800 shadow-md space-y-4">
+                    <h3 className="font-extrabold text-xs tracking-wide uppercase text-pink-400 flex items-center gap-1.5 border-b border-slate-800 pb-3">
+                      <Sparkles className="w-4.5 h-4.5 text-pink-400" />
+                      CSES 연구원 꿀팁 가이드
+                    </h3>
+
+                    <div className="space-y-4">
+                      <div className="space-y-1 text-start">
+                        <h4 className="text-xs font-black text-rose-300 flex items-center gap-1.5">
+                          <HelpCircle className="w-3.5 h-3.5 text-rose-300 shrink-0" />
+                          프롬프트 클립보드 활용
+                        </h4>
+                        <p className="text-[11.5px] text-slate-300 leading-relaxed">
+                          프롬프트 실증도구를 실행하여 도출된 완벽한 국어/영어 결과문은 상단의 <b>[결과 복사하기]</b> 버튼 한 번으로 클립보드에 초정밀 자동 보관됩니다.
+                        </p>
+                      </div>
+
+                      <div className="space-y-1 text-start pt-2 border-t border-slate-800">
+                        <h4 className="text-xs font-black text-rose-300 flex items-center gap-1.5">
+                          <Search className="w-3.5 h-3.5 text-rose-300 shrink-0" />
+                          실시간 네이버 동향 다차원 분석
+                        </h4>
+                        <p className="text-[11.5px] text-slate-300 leading-relaxed">
+                          포털 동향 메뉴에서 검색어 기재 부분 외에, 등록된 핵심 추천 태그인 <b>#사회적가치 인공지능 / #ESG AI</b>를 클릭만 해도 즉석에서 쿼리가 주입됩니다.
+                        </p>
+                      </div>
+
+                      <div className="space-y-1 text-start pt-2 border-t border-slate-800">
+                        <h4 className="text-xs font-black text-rose-300 flex items-center gap-1.5">
+                          <Send className="w-3.5 h-3.5 text-rose-300 shrink-0" />
+                          수준별 AI 코칭 가변성
+                        </h4>
+                        <p className="text-[11.5px] text-slate-300 leading-relaxed">
+                          AI Classroom의 챗봇 상담은 SROI 자가 진단을 완수한 이력을 능동적으로 연동하여, 대답의 예시와 개념 난이도를 주체적으로 가변합니다.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm space-y-4">
+                    <h3 className="font-extrabold text-slate-900 text-sm border-b border-slate-100 pb-2">
+                       자주 묻는 질문 (FAQ)
+                    </h3>
+                    
+                    <div className="space-y-3 pb-2">
+                      <details className="group border-b border-slate-100 pb-2 cursor-pointer">
+                        <summary className="list-none flex justify-between items-center text-xs font-bold text-slate-800 group-open:text-[#D20A50]">
+                          <span>Q. 뉴스 임팩트 요약 요강 출처는?</span>
+                          <span className="text-slate-400 group-open:rotate-180 transition-transform duration-200">▼</span>
+                        </summary>
+                        <p className="text-[11px] text-slate-500 leading-relaxed mt-2 pl-1">
+                          네이버 뉴스 실시간 검색 연동 API에서 발췌된 기사 명세를 직접 추출하여, Gemini가 핵심 연구 통찰 맥락으로 고속 요약 정밀 생성합니다.
+                        </p>
+                      </details>
+
+                      <details className="group border-b border-slate-100 pb-2 cursor-pointer">
+                        <summary className="list-none flex justify-between items-center text-xs font-bold text-slate-800 group-open:text-[#D20A50]">
+                          <span>Q. 자가진단을 리셋하는 방법은?</span>
+                          <span className="text-slate-400 group-open:rotate-180 transition-transform duration-200">▼</span>
+                        </summary>
+                        <p className="text-[11px] text-slate-500 leading-relaxed mt-2 pl-1">
+                          맞춤형 AI 강의실의 상단 혹은 홈 우측의 큐레이션 자가진단 카드를 재클릭 후 <b>'다시 추천받기'</b> 혹은 큐레이션 초기화 과정을 완수하면 언제나 새로운 결과 배치가 부여됩니다.
+                        </p>
+                      </details>
+
+                      <details className="group border-b border-slate-100 pb-2 cursor-pointer">
+                        <summary className="list-none flex justify-between items-center text-xs font-bold text-slate-800 group-open:text-[#D20A50]">
+                          <span>Q. 엑셀 CSV 인코딩 문제 해결하기?</span>
+                          <span className="text-slate-400 group-open:rotate-180 transition-transform duration-200">▼</span>
+                        </summary>
+                        <p className="text-[11px] text-slate-500 leading-relaxed mt-2 pl-1">
+                          CSES AI Hub에서 추출하는 CSV 파일은 한글 마이크로소프트 엑셀 유니코드 호환을 위해 BOM 바이트 헤더(UTF-8 BOM)를 내장해 내보내므로, 글자 깨짐 현상 없이 완벽 구동됩니다.
+                        </p>
+                      </details>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+          )}
+
         </main>
-      </div>
 
       {/* --------------------------------------------------
           POPUP MODAL: CSES Platform Guide Modal (Phase 1 compliant)
@@ -1536,17 +1687,22 @@ export default function App() {
                 
                 <div className="grid grid-cols-1 gap-3">
                   {[
-                    { val: "입문", title: "🌱 입문 과정", desc: "개념 정립 및 사회적 가치의 측정 당위성을 이해해보고 싶습니다." },
-                    { val: "중급", title: "📊 중급 실무", desc: "이중 중요성 평가 지표 수립이나 SROI 정량 산출 실무를 다룹니다." },
-                    { val: "고급", title: "🧭 고급 응용 / 세미나", desc: "AI RAG 융합 프롬프트 가시성 및 글로벌 Net zero 공조 가치 방향을 연구합니다." }
+                    { val: "입문", title: "입문 과정", desc: "개념 정립 및 사회적 가치의 측정 당위성을 이해해보고 싶습니다.", icon: Award },
+                    { val: "중급", title: "중급 실무", desc: "이중 중요성 평가 지표 수립이나 SROI 정량 산출 실무를 다룹니다.", icon: SlidersHorizontal },
+                    { val: "고급", title: "고급 응용 / 세미나", desc: "AI RAG 융합 프롬프트 가시성 및 글로벌 Net zero 공조 가치 방향을 연구합니다.", icon: BookOpen }
                   ].map((opt) => (
                     <button 
                       key={opt.val}
                       onClick={() => handleSurveyOption("level", opt.val)}
-                      className="text-left p-4 rounded-2xl border border-slate-200 hover:border-brand-200 hover:bg-pink-50/10 transition cursor-pointer"
+                      className="text-left p-4 rounded-2xl border border-slate-200 hover:border-[#D20A50] hover:bg-pink-50/10 transition cursor-pointer flex items-start gap-3"
                     >
-                      <h5 className="font-bold text-slate-800 text-xs md:text-sm">{opt.title}</h5>
-                      <p className="text-[11px] text-slate-500 mt-1">{opt.desc}</p>
+                      <div className="w-8 h-8 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center shrink-0">
+                        <opt.icon className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h5 className="font-bold text-slate-800 text-xs md:text-sm">{opt.title}</h5>
+                        <p className="text-[11px] text-slate-500 mt-1">{opt.desc}</p>
+                      </div>
                     </button>
                   ))}
                 </div>
@@ -1566,17 +1722,22 @@ export default function App() {
                 
                 <div className="grid grid-cols-1 gap-3">
                   {[
-                    { val: "사회공헌", title: "🤝 사회공헌 & 소셜 비즈니스", desc: "소셜 벤처 생태계 활성화 및 기업 공동 가치 창출(CSV)" },
-                    { val: "ESG 공시", title: "📋 ESG 정보공시 및 글로벌 지표 수립", desc: "GRI 2.0 표준, 탄소 Scope 3 회계 평가론" },
-                    { val: "지역혁신", title: "🏡 지역 소멸 방지 및 로컬 펀딩 대안", desc: "자생적 로컬 생태계 거점 청정 산업군 설계" }
+                    { val: "사회공헌", title: "사회공헌 & 소셜 비즈니스", desc: "소셜 벤처 생태계 활성화 및 기업 공동 가치 창출(CSV)", icon: HelpCircle },
+                    { val: "ESG 공시", title: "ESG 정보공시 및 글로벌 지표 수립", desc: "GRI 2.0 표준, 탄소 Scope 3 회계 평가론", icon: FileText },
+                    { val: "지역혁신", title: "지역 소멸 방지 및 로컬 펀딩 대안", desc: "자생적 로컬 생태계 거점 청정 산업군 설계", icon: Info }
                   ].map((opt) => (
                     <button 
                       key={opt.val}
                       onClick={() => handleSurveyOption("topic", opt.val)}
-                      className="text-left p-4 rounded-2xl border border-slate-200 hover:border-brand-200 hover:bg-pink-50/10 transition cursor-pointer"
+                      className="text-left p-4 rounded-2xl border border-slate-200 hover:border-[#D20A50] hover:bg-pink-50/10 transition cursor-pointer flex items-start gap-3"
                     >
-                      <h5 className="font-bold text-slate-800 text-xs md:text-sm">{opt.title}</h5>
-                      <p className="text-[11px] text-slate-500 mt-1">{opt.desc}</p>
+                      <div className="w-8 h-8 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center shrink-0">
+                        <opt.icon className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h5 className="font-bold text-slate-800 text-xs md:text-sm">{opt.title}</h5>
+                        <p className="text-[11px] text-slate-500 mt-1">{opt.desc}</p>
+                      </div>
                     </button>
                   ))}
                 </div>
@@ -1596,17 +1757,22 @@ export default function App() {
                 
                 <div className="grid grid-cols-1 gap-3">
                   {[
-                    { val: "SV 측정", title: "📏 정량 성과 화폐화 공식 및 SROI", desc: "사회적 편익을 직접 공식에 의해 화폐액으로 치환" },
-                    { val: "AI 프롬프트", title: "💻 AI RAG 프롬프팅 조절 기술", desc: "수작업을 탈피하여 리서치 초록 요약을 자동 지능화" },
-                    { val: "SDGs", title: "🌎 글로벌 SDGs 연계 연합", desc: "유네스코 표준 및 해외 포럼 지침 매트릭스 고도화" }
+                    { val: "SV 측정", title: "정량 성과 화폐화 공식 및 SROI", desc: "사회적 편익을 직접 공식에 의해 화폐액으로 치환", icon: Clock },
+                    { val: "AI 프롬프트", title: "AI RAG 프롬프팅 조절 기술", desc: "수작업을 탈피하여 리서치 초록 요약을 자동 지능화", icon: Terminal },
+                    { val: "SDGs", title: "글로벌 SDGs 연계 연합", desc: "유네스코 표준 및 해외 포럼 지침 매트릭스 고도화", icon: Database }
                   ].map((opt) => (
                     <button 
                       key={opt.val}
                       onClick={() => handleSurveyOption("skill", opt.val)}
-                      className="text-left p-4 rounded-2xl border border-slate-200 hover:border-brand-200 hover:bg-pink-50/10 transition cursor-pointer"
+                      className="text-left p-4 rounded-2xl border border-slate-200 hover:border-[#D20A50] hover:bg-pink-50/10 transition cursor-pointer flex items-start gap-3"
                     >
-                      <h5 className="font-bold text-slate-800 text-xs md:text-sm">{opt.title}</h5>
-                      <p className="text-[11px] text-slate-500 mt-1">{opt.desc}</p>
+                      <div className="w-8 h-8 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center shrink-0">
+                        <opt.icon className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h5 className="font-bold text-slate-800 text-xs md:text-sm">{opt.title}</h5>
+                        <p className="text-[11px] text-slate-500 mt-1">{opt.desc}</p>
+                      </div>
                     </button>
                   ))}
                 </div>
@@ -1616,8 +1782,10 @@ export default function App() {
             {/* STEP 4: Survey Outcome */}
             {surveyStep === 4 && (
               <div className="space-y-4" id="diagnostic-survey-result-p">
-                <div className="text-center space-y-2 py-4">
-                  <span className="inline-block p-3 bg-pink-100 text-[#D20A50] rounded-full text-xl">🎉</span>
+                <div className="text-center space-y-3 py-4">
+                  <div className="w-12 h-12 rounded-full bg-slate-100 text-[#D20A50] border border-slate-200 flex items-center justify-center mx-auto">
+                    <Award className="w-6 h-6" />
+                  </div>
                   <h4 className="text-slate-800 font-extrabold text-base md:text-lg">맞춤 분석 진단이 정상적으로 완료되었습니다!</h4>
                   <p className="text-slate-500 text-xs">
                     연구원님의 진단 인덱스 매핑에 부합하는 강좌 및 수준을 하단 대시보드와 리스트에 적용하였습니다.
