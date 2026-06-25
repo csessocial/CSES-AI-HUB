@@ -1,4 +1,0 @@
-/api
-  /news.js   ← 여기서 네이버 API 호출
-/src
-  /... (기존 React 코드)'
