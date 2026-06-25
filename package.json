@@ -1,4 +1,6 @@
-{
+"dependencies": {
+    "@vercel/node": "^3.0.0",
+    "@google/genai": "^1.29.0",
   "name": "react-example",
   "private": true,
   "version": "0.0.0",
