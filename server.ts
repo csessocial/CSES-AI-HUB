@@ -29,7 +29,9 @@ function getGeminiClient() {
   return aiClient;
 }
 
-const __filename = fileURLToPath(import.meta.url);
+import { createRequire } from "module";
+const require = createRequire(import.meta.url || "file://");
+const __filename = new URL(import.meta.url || import.meta.filename || "file://" + process.argv[1]).pathname;
 const __dirname = path.dirname(__filename);
 
 const mediaSourceMap: { [key: string]: string } = {
