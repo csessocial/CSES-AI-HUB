@@ -9,20 +9,23 @@
   --color-brand-50: #fdf2f4;
   --color-brand-100: #fce7ec;
   --color-brand-200: #f9cfda;
-  --color-brand-500: #d20a50;
-  --color-brand-600: #b80543;
-  --color-brand-700: #9c0235;
-  --color-brand-800: #800028;
-  --color-brand-900: #66001f;
+  --color-brand-500: #D81159;
+  --color-brand-600: #b50e49;
+  --color-brand-700: #930839;
+  --color-brand-800: #73032a;
+  --color-brand-900: #54001d;
   
   --color-plum-50: #fdf2f4;
   --color-plum-100: #fce7ec;
   --color-plum-200: #f9cfda;
-  --color-plum-350: #e2376f;
-  --color-plum-600: #d20a50;
-  --color-plum-700: #b80543;
-  --color-plum-800: #9c0235;
-  --color-plum-900: #66001f;
+  --color-plum-350: #e51b63;
+  --color-plum-500: #D81159;
+  --color-plum-600: #b50e49;
+  --color-plum-700: #930839;
+  --color-plum-800: #73032a;
+  --color-plum-900: #54001d;
+
+  --color-cses-plum: #D81159;
 }
 
 /* Custom fade transitions and base cleanups */

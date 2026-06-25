@@ -50,7 +50,31 @@ const mediaSourceMap: { [key: string]: string } = {
   "ddaily.co.kr": "디지털데일리",
   "itworld.co.kr": "ITWorld",
   "biz.chosun.com": "조선비즈",
-  "moneytoday.co.kr": "머니투데이"
+  "moneytoday.co.kr": "머니투데이",
+  "sedaily.com": "서울경제",
+  "edaily.co.kr": "이데일리",
+  "seoul.co.kr": "서울신문",
+  "segye.com": "세계일보",
+  "news1.kr": "뉴스1",
+  "newsis.com": "뉴시스",
+  "asiae.co.kr": "아시아경제",
+  "heraldcorp.com": "헤럴드경제",
+  "fnnews.com": "파이낸셜뉴스",
+  "dt.co.kr": "디지털타임스",
+  "inews24.com": "아이뉴스24",
+  "ajunews.com": "아주경제",
+  "boannews.com": "보안뉴스",
+  "hellot.net": "헬로티",
+  "itcle.com": "IT클레",
+  "newspim.com": "뉴스핌",
+  "g-enews.com": "글로벌이코노믹",
+  "digitaltoday.co.kr": "디지털투데이",
+  "techm.kr": "테크M",
+  "thebell.co.kr": "더벨",
+  "koit.co.kr": "정보통신신문",
+  "worktoday.co.kr": "워크투데이",
+  "sentv.co.kr": "서울경제TV",
+  "industrynews.co.kr": "인더스트리뉴스"
 };
 
 const allowedDomains = Object.keys(mediaSourceMap);
@@ -58,21 +82,41 @@ const allowedDomains = Object.keys(mediaSourceMap);
 // Simple cache for OG images to prevent repeated scraping
 const ogImageCache = new Map<string, string>();
 
-async function getOgImage(url: string, index: number): Promise<string> {
+async function getOgImage(originalUrl: string, naverUrl: string, index: number): Promise<string> {
+  const url = (naverUrl && naverUrl.includes("naver.com")) ? naverUrl : (originalUrl || naverUrl);
+  if (!url) {
+    const fallbacks = [
+      "https://images.unsplash.com/photo-1677442136019-21780ecad995",
+      "https://images.unsplash.com/photo-1620712943543-bcc4688e7485",
+      "https://images.unsplash.com/photo-1550751827-4bd374c3f58b",
+      "https://images.unsplash.com/photo-1507146482235-478696bd9465",
+      "https://images.unsplash.com/photo-1485827404703-89b55fcc595e",
+      "https://images.unsplash.com/photo-1518770660439-4636190af475",
+      "https://images.unsplash.com/photo-1531297484001-80022131f5a1",
+      "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
+      "https://images.unsplash.com/photo-1451187580459-43490279c0fa",
+      "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b"
+    ];
+    return `${fallbacks[index % fallbacks.length]}?auto=format&fit=crop&q=80&w=800`;
+  }
+
   if (ogImageCache.has(url)) {
     return ogImageCache.get(url)!;
   }
 
   try {
     const response = await axios.get(url, { 
-      timeout: 3000,
+      timeout: 2500,
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7'
       }
     });
     const $ = cheerio.load(response.data);
     let ogImage = $('meta[property="og:image"]').attr('content') || 
-                    $('meta[name="twitter:image"]').attr('content');
+                  $('meta[name="twitter:image"]').attr('content') ||
+                  $('meta[name="image"]').attr('content');
     
     if (ogImage) {
       if (!ogImage.startsWith('http')) {
@@ -83,7 +127,30 @@ async function getOgImage(url: string, index: number): Promise<string> {
       return ogImage;
     }
   } catch (error) {
-    // Silently fail and use fallback
+    // Fallback try: if naverUrl was used first, try originalUrl as backup
+    if (url === naverUrl && originalUrl && originalUrl !== naverUrl) {
+      try {
+        const response = await axios.get(originalUrl, { 
+          timeout: 2000,
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+          }
+        });
+        const $ = cheerio.load(response.data);
+        let ogImage = $('meta[property="og:image"]').attr('content') || 
+                      $('meta[name="twitter:image"]').attr('content');
+        if (ogImage) {
+          if (!ogImage.startsWith('http')) {
+            const urlObj = new URL(originalUrl);
+            ogImage = urlObj.origin + (ogImage.startsWith('/') ? '' : '/') + ogImage;
+          }
+          ogImageCache.set(originalUrl, ogImage);
+          return ogImage;
+        }
+      } catch (innerErr) {
+        // fail silently
+      }
+    }
   }
 
   // Fallback: Professional AI/Tech images from Unsplash
@@ -787,12 +854,25 @@ async function startServer() {
                 if (!link || seenLinks.has(link) || seenTitles.has(cleanTitle)) continue;
                 
                 const domainMatched = allowedDomains.find(d => link.toLowerCase().includes(d));
-                if (domainMatched) {
-                  seenLinks.add(link);
-                  seenTitles.add(cleanTitle);
-                  allCategorizedItems.push({ ...item, category: cat.name, domainMatched });
-                  catItemsCount++;
+                seenLinks.add(link);
+                seenTitles.add(cleanTitle);
+                
+                let sourceDomain = domainMatched;
+                if (!sourceDomain) {
+                  try {
+                    sourceDomain = new URL(link).hostname.replace("www.", "");
+                  } catch (e) {
+                    sourceDomain = "news";
+                  }
                 }
+                
+                allCategorizedItems.push({ 
+                  ...item, 
+                  category: cat.name, 
+                  domainMatched: sourceDomain 
+                });
+                catItemsCount++;
+                
                 if (catItemsCount >= 50) break;
               }
             }
@@ -805,8 +885,8 @@ async function startServer() {
       const newsData = await Promise.all(
         allCategorizedItems.map(async (item: any, index: number) => {
           const link = item.originallink || item.link;
-          const source = mediaSourceMap[item.domainMatched] || "주요 언론";
-          const image = await getOgImage(link, index);
+          const source = mediaSourceMap[item.domainMatched] || item.domainMatched || "주요 언론";
+          const image = await getOgImage(item.originallink, item.link, index);
           
           const decode = (str: string) => {
             if (!str) return "";
@@ -822,7 +902,6 @@ async function startServer() {
           };
 
           const decodedTitle = decode(item.title);
-
           const aiSummary = decode(item.description);
 
           return {
@@ -831,7 +910,7 @@ async function startServer() {
             summary: aiSummary,
             source: source,
             category: item.category,
-            date: new Date(item.pubDate).toISOString().split("T")[0],
+            date: item.pubDate ? new Date(item.pubDate).toISOString().split("T")[0] : new Date().toISOString().split("T")[0],
             link: link,
             image: image
           };
@@ -850,13 +929,76 @@ async function startServer() {
     }
   };
 
-  // Initial fetch and interval
+  // Timezone-safe daily 8:00 AM KST Scheduler
+  function getMsUntil8AMKST(): number {
+    const now = new Date();
+    // Convert current time to KST (UTC+9)
+    const utc = now.getTime() + (now.getTimezoneOffset() * 60 * 1000);
+    const kstNow = new Date(utc + (9 * 60 * 60 * 1000));
+    
+    const kst8AM = new Date(kstNow);
+    kst8AM.setHours(8, 0, 0, 0);
+    
+    if (kstNow.getTime() >= kst8AM.getTime()) {
+      kst8AM.setDate(kst8AM.getDate() + 1);
+    }
+    
+    return kst8AM.getTime() - kstNow.getTime();
+  }
+
+  function scheduleDailyFetch() {
+    const delay = getMsUntil8AMKST();
+    const delayMinutes = Math.round(delay / 1000 / 60);
+    console.log(`[Scheduler] Next automatic news fetch scheduled at 8:00 AM KST (in ${delayMinutes} minutes).`);
+    
+    setTimeout(async () => {
+      console.log("[Scheduler] 8:00 AM KST trigger: Fetching daily fresh AI news.");
+      await performNewsFetch();
+      scheduleDailyFetch(); // Recursively schedule for the next day
+    }, delay);
+  }
+
+  // Initial fetch and automatic triggers
   performNewsFetch();
-  setInterval(performNewsFetch, 15 * 60 * 1000); // 15 mins interval
+  scheduleDailyFetch(); // Daily 8:00 AM KST
+  setInterval(performNewsFetch, 4 * 60 * 60 * 1000); // 4-hour safety refresh
 
   // Standard API Fetch instead of SSE
   app.get("/api/news", (req, res) => {
     res.json(newsCache);
+  });
+
+  // Live custom Naver news proxy for client search with real photo resolution
+  app.get("/api/naver-news", async (req, res) => {
+    const query = req.query.query || "AI 기술";
+    const display = req.query.display || "30";
+    try {
+      const response = await axios.get("https://openapi.naver.com/v1/search/news.json", {
+        params: { query, display, sort: "sim" },
+        headers: {
+          "X-Naver-Client-Id": process.env.NAVER_CLIENT_ID || "",
+          "X-Naver-Client-Secret": process.env.NAVER_CLIENT_SECRET || "",
+        },
+      });
+      if (response.data && response.data.items) {
+        // Crawl and resolve real article OG images in parallel
+        const itemsWithImages = await Promise.all(
+          response.data.items.map(async (item: any, index: number) => {
+            const image = await getOgImage(item.originallink, item.link, index);
+            return {
+              ...item,
+              image
+            };
+          })
+        );
+        res.json({ ...response.data, items: itemsWithImages });
+      } else {
+        res.json(response.data);
+      }
+    } catch (err: any) {
+      console.error("Error fetching custom Naver news:", err?.message || err);
+      res.status(500).json({ error: "Failed to fetch news from Naver API", details: err?.message || err });
+    }
   });
 
   // Vite middleware for development
