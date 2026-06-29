@@ -643,17 +643,6 @@ export const RESEARCH_INSIGHTS: ResearchInsight[] = [
   },
   {
     id: 5,
-    title: "사회성과인센티브(SPC) 10년의 성과와 향후 과제 연구서",
-    author: "나석권, 최명, 정경윤 (CSES 연구진)",
-    date: "2025.04",
-    tag: "Deep Dive",
-    publisher: "사회적가치연구원 (CSES)",
-    doi_or_id: "CSES-SPC-10YR",
-    abstract: "사회성과인센티브(SPC) 제도의 도입 10주년을 맞아, 참여 기업들이 창출한 사회성과 측정 결과를 종합 계량화하고 사회적 가치(SV) 화폐화 산출 지표를 체계적으로 분석한 공식 학술 보고서입니다. SPC를 통한 소셜 벤처 생태계의 성장 촉진 효과 및 차세대 성과보상체계 설계안을 제안합니다.",
-    link: "https://www.cses.re.kr/board/research/list.do"
-  },
-  {
-    id: 6,
     title: "The economic potential of generative AI: The next productivity frontier",
     author: "Michael Chui, James Manyika, Lareina Yee",
     date: "2023.06",
@@ -664,7 +653,7 @@ export const RESEARCH_INSIGHTS: ResearchInsight[] = [
     link: "https://www.mckinsey.com/capabilities/mckinsey-digital/our-insights/the-economic-potential-of-generative-ai-the-next-productivity-frontier"
   },
   {
-    id: 7,
+    id: 6,
     title: "Artificial Intelligence Index Report 2024",
     author: "Nestor Maslej, Loredana Fattorini, Ray Perrault, Jack Clark",
     date: "2024.04",
@@ -675,7 +664,7 @@ export const RESEARCH_INSIGHTS: ResearchInsight[] = [
     link: "https://hai.stanford.edu/research/ai-index-report-2024"
   },
   {
-    id: 8,
+    id: 7,
     title: "Actionable Auditing: Investigating the Impact of Publicly Facing Biased Facial Analysis Systems",
     author: "Inioluwa Deborah Raji, Joy Buolamwini",
     date: "2019.01",
@@ -686,7 +675,7 @@ export const RESEARCH_INSIGHTS: ResearchInsight[] = [
     link: "https://dl.acm.org/doi/10.1145/3306618.3314244"
   },
   {
-    id: 9,
+    id: 8,
     title: "Constitutional AI: Harmlessness from AI Feedback",
     author: "Yuntao Bai, Saurabh Kadavath, Sandipan Kundu, Amanda Askell",
     date: "2022.12",
@@ -697,7 +686,7 @@ export const RESEARCH_INSIGHTS: ResearchInsight[] = [
     link: "https://arxiv.org/abs/2212.08073"
   },
   {
-    id: 10,
+    id: 9,
     title: "Green AI",
     author: "Roy Schwartz, Jesse Dodge, Noah A. Smith, Oren Etzioni",
     date: "2020.12",
@@ -708,7 +697,7 @@ export const RESEARCH_INSIGHTS: ResearchInsight[] = [
     link: "https://arxiv.org/abs/1907.10597"
   },
   {
-    id: 11,
+    id: 10,
     title: "The Global Risks Report 2024",
     author: "World Economic Forum (WEF) Research",
     date: "2024.01",
@@ -719,7 +708,7 @@ export const RESEARCH_INSIGHTS: ResearchInsight[] = [
     link: "https://www.weforum.org/publications/global-risks-report-2024/"
   },
   {
-    id: 12,
+    id: 11,
     title: "Tasks, Automation, and the Labor Market in the Era of AI",
     author: "Daron Acemoglu, Pascual Restrepo",
     date: "2019.05",
