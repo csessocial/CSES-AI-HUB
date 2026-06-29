@@ -574,7 +574,7 @@ export const PROMPT_TEMPLATES: PromptTemplate[] = [
   },
   {
     id: "topic_discovery",
-    title: "💡 사회성과(SV) 연구주제 및 가설 발굴",
+    title: "💡 사회적가치(SV) 연구주제 및 가설 발굴",
     subtitle: "SROI, DBL 트렌드에 맞는 최신 학술 연구 아젠다 제안",
     icon: "Compass",
     placeholder: "관심 있는 핵심 영역이나 사회 문제를 적어주세요 (예: 탄소 배출, 취약 계층, 지자체 일자리 등)...",

@@ -1,5 +1,6 @@
 import express from "express";
 import path from "path";
+import { fileURLToPath } from "url";
 import { createServer as createViteServer } from "vite";
 import dotenv from "dotenv";
 import axios from "axios";
@@ -27,6 +28,9 @@ function getGeminiClient() {
   }
   return aiClient;
 }
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const mediaSourceMap: { [key: string]: string } = {
   "yna.co.kr": "연합뉴스",
@@ -802,8 +806,75 @@ async function startServer() {
     console.warn("NAVER_CLIENT_ID not found in process.env, using fallback.");
   }
 
+  const getRelativeDateStr = (offsetDays: number) => {
+    const d = new Date();
+    d.setDate(d.getDate() - offsetDays);
+    return d.toISOString().split("T")[0];
+  };
+
   // Server-side cache for news consistency (Fixed total pool, categorized)
-  let newsCache: any[] = [];
+  let newsCache: any[] = [
+    {
+      id: "seed-news-1",
+      title: "OpenAI, 차세대 추론 모델 'o3-mini' 기반 사회적 가치 최적화 가이드라인 전격 도입",
+      summary: "OpenAI가 고도화된 추론 성능을 가진 o3-mini 모델에 사회적 가치(SV) 및 지속가능발전목표(SDGs) 연계 지침을 내장한 맞춤형 프리셋을 발표하였습니다. 이번 업데이트는 학술 연구의 추론 정확도를 기존 대비 30% 향상시킵니다.",
+      source: "IT조선 테크",
+      category: "기술",
+      date: getRelativeDateStr(0),
+      link: "https://www.etnews.com",
+      image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=600&auto=format&fit=crop"
+    },
+    {
+      id: "seed-news-2",
+      title: "UN AI 고위급 자문위, 글로벌 AI 거버넌스 및 윤리적 사회적 가치 임팩트 표준안 채택",
+      summary: "UN High-level Advisory Body가 AI 훈련 시 전력 소모에 따른 이산화탄소 배출과 알고리즘 편향성을 완화하는 최초의 글로벌 AI 안전 규범을 수립하고 전 세계 국가에 공식 권고안을 발송했습니다.",
+      source: "연합뉴스 테크",
+      category: "규제",
+      date: getRelativeDateStr(0),
+      link: "https://www.yna.co.kr",
+      image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=600&auto=format&fit=crop"
+    },
+    {
+      id: "seed-news-3",
+      title: "구글 딥마인드, 기후 변화 및 사회문제 해결을 위한 'Gemini 2.5 Flash' 특화 임팩트 엔진 공개",
+      summary: "구글이 기후 데이터 분석 및 복잡한 정량 사회 지표 추적에 최적화된 Gemini 2.5 Pro 및 Flash 특화 API를 공개했습니다. 이 API는 SROI 모델 계산 및 학술 보고서 분류 업무 효율성을 크게 높여줄 것입니다.",
+      source: "전자신문",
+      category: "기술",
+      date: getRelativeDateStr(1),
+      link: "https://www.etnews.com",
+      image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=600&auto=format&fit=crop"
+    },
+    {
+      id: "seed-news-4",
+      title: "EU AI Act 공식 집행위 출범... 고위험 알고리즘 편향성 및 정기 감사 의무화 시동",
+      summary: "유럽연합이 세계 최초의 인공지능 법안(EU AI Act)의 구체적인 제재 지침을 공표했습니다. 이에 따라 공공 의료, 채용, 신용 평가 시스템 등에 사용되는 AI에 대한 고강도 외부 감사가 정례화됩니다.",
+      source: "디지털데일리",
+      category: "규제",
+      date: getRelativeDateStr(1),
+      link: "https://www.ddaily.co.kr",
+      image: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=600&auto=format&fit=crop"
+    },
+    {
+      id: "seed-news-5",
+      title: "스탠퍼드 HAI, 2026년 글로벌 AI 인덱스 발표... 탄소 배출량 및 거버넌스가 핵심 화두로 부상",
+      summary: "스탠퍼드 인간중심AI연구소(HAI)의 최신 보고서에 따르면, 최신 LLM의 훈련 비용이 급격하게 늘면서 발생한 친환경 에너지 소모와 알고리즘의 윤리성, 거버넌스 투명성이 향후 AI 비즈니스의 최대 생존 요건이 될 것임을 실증 지표로 밝혔습니다.",
+      source: "아이뉴스24",
+      category: "연구",
+      date: getRelativeDateStr(2),
+      link: "https://www.inews24.com",
+      image: "https://images.unsplash.com/photo-1507537297725-24a1c029d3ca?q=80&w=600&auto=format&fit=crop"
+    },
+    {
+      id: "seed-news-6",
+      title: "마이크로소프트, 지속 가능 발전을 위한 'Green AI' 파트너십 구축 및 소형고효율(SLM) 연구 촉진",
+      summary: "마이크로소프트가 연산 효율성을 높이고 인프라 수자원 소모를 최소화하는 차세대 소형 언어 모델 파이(Phi)를 활용해 공공 사회 공헌 기관들과의 친환경 AI 프로젝트 공동 전선 구축 계획을 전격 발표했습니다.",
+      source: "머니투데이",
+      category: "연구",
+      date: getRelativeDateStr(2),
+      link: "https://www.mt.co.kr",
+      image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=600&auto=format&fit=crop"
+    }
+  ];
   let isFetching = false;
 
   const performNewsFetch = async () => {

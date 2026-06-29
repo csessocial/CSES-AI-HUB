@@ -82,7 +82,7 @@ export default function App() {
   // 2. Naver News Search API States & Fetcher
   // --------------------------------------------------
   const [naverNews, setNaverNews] = useState<any[]>([]);
-  const [naverSearchQuery, setNaverSearchQuery] = useState<string>("AI 기술");
+  const [naverSearchQuery, setNaverSearchQuery] = useState<string>("");
   const [isNaverNewsLoading, setIsNaverNewsLoading] = useState<boolean>(false);
 
   // High-fidelity image and category news states for UI match
@@ -260,7 +260,7 @@ export default function App() {
 
   useEffect(() => {
     const handler = setTimeout(() => {
-      fetchNaverNews(naverSearchQuery);
+      fetchNaverNews(naverSearchQuery || "AI");
     }, 400);
     return () => {
       clearTimeout(handler);
@@ -567,7 +567,7 @@ export default function App() {
     {
       id: 5,
       category: "RESEARCH",
-      title: "💡 사회성과(SV) 연구주제 및 가설 발굴",
+      title: "💡 사회적가치(SV) 연구주제 및 가설 발굴",
       subtitle: "글로벌 트렌드(OBF, ESG, 탄소중립, SROI 등)를 반영하여 실제 실무 보고서로 연결할 수 있는 혁신적인 미래 연구 주제와 가설을 탐색합니다.",
       labTip: "새로운 기획서 작성 시 브레인스토밍 파트너로 Gemini Pro를 활용하여 글로벌 아젠다(WEF, UN 등)와의 정책 싱크를 맞춰보세요.",
       promptText: `너는 사회적 가치(Social Value), 임팩트 금융, ESG 및 SROI(사회적 투자수익률) 분야의 글로벌 석학이자 CSES 리서치 아키텍트야. 아래 관심 키워드나 사회적 아젠다를 참고해 혁신적인 차세대 연구 주제 기획서안을 제시해줘.
@@ -614,6 +614,60 @@ export default function App() {
 * **슬라이드 실물 텍스트 콘텐츠**:
   - (슬라이드에 실제로 들어갈 텍스트를 간결하고 임팩트 있는 보고서체 명사형으로 작성)
 * **AI 이미지 생성 및 도표 가이드**: (해당 슬라이드를 파워포인트나 HTML 코드로 구현할 때 사용할 아이콘, 화살표 흐름도, 또는 인포그래픽 구조를 구체적으로 가이드)`
+    },
+    {
+      id: 7,
+      category: "SYSTEM AI",
+      title: "🎓 맞춤형 연구 페르소나 및 전문가 설정",
+      subtitle: "특정 분야의 거장이나 전문가 페르소나를 AI에 주입하여, 입체적이고 전문적인 시각의 심층 비평 및 논리적 대안을 도출합니다.",
+      labTip: "System Prompt 개념으로 기입하면 가장 큰 효과를 발휘합니다. 구체적인 경력, 분석 프레임워크 및 실무 규칙을 정밀하게 묘사할수록 품질이 비약적으로 향상됩니다.",
+      promptText: `너는 사회적 가치(SV)와 지속가능경영(ESG) 도메인에서 20년 이상의 실무 및 연구 경력을 보유한 독보적인 '수석 연구원' 페르소나야.
+
+[내가 원하는 AI의 구체적 성향 및 전문 분야]:
+"[이곳에 당신이 원하는 AI의 구체적인 학술적 성향, 선호하는 연구 방법론, 혹은 기구 지향점을 상세히 기입해 주세요]"
+
+페르소나 행동 지침 및 가이드라인:
+1. 말투: 철저하게 학술적이고, 객관적이며, 데이터를 근거로 하여 강력한 통찰력을 담아 조리 있게 전개할 것.
+2. 분석 기준: 단순한 상식 수준의 해설을 지양하고, 투입 대비 산출을 밝히는 'Logic Model' 또는 정량적 화폐화 환산을 지향하는 '사회적 투자 수익률(SROI)' 프레임워크를 기반으로 분석을 수행할 것.
+
+업무 수행 규칙:
+- 모든 답변은 수립된 분석 철학과 고품격 학술적 체계에 긴밀히 부합해야 합니다.
+- 답변의 가장 마지막 단락에는, 나의 주장을 건전하게 반박하고 논리적 허점을 메울 수 있도록 날카로운 지적을 해주는 '악마의 대변인(Devil's Advocate)' 관점을 2가지 이상 명확하게 제시해 주세요.`
+    },
+    {
+      id: 8,
+      category: "VISUALIZATION",
+      title: "📊 데이터 시각화 전략 수립",
+      subtitle: "복잡하고 난해한 사회적 가치 측정 결과 및 통계 데이터를 가독성 높은 차트, 레이아웃, 컬러톤 기반의 비주얼 스토리로 변환하는 기획안을 설계합니다.",
+      labTip: "시각적 논리 흐름과 적절한 정보 연출(Sankey Diagram, Treemap, Radar Chart 등)을 구성할 때 Gemini의 논리적 묘사가 탁월하므로 적극 추천합니다.",
+      promptText: `너는 복잡한 수치 데이터를 한눈에 보여주는 데이터 시각화 전문가이자 인포그래픽 비주얼 스토리텔링 전문가야. 제공된 데이터를 분석하여 가장 효과적이고 매력적으로 시각화할 수 있는 기획안을 세밀하게 설계해줘.
+
+[시각화할 데이터 특징 및 강조할 핵심 메시지]:
+"[이곳에 시각화할 데이터의 구조, 수치 및 강조하고 싶은 임팩트 메시지를 입력하세요]"
+
+시각화 제안 항목:
+1. 핵심 메시지 매칭 차트 유형: 데이터의 관계와 가독성을 살리는 최적의 차트 유형(예: Bar, Sankey Diagram, Radar Chart, Treemap 등)과 추천 사유 제시
+2. 강조할 핵심 지표 및 레이아웃: 시선의 흐름과 논리를 고려한 주 지표(Hero Metric)의 위치 배합 및 강조 디자인 가이드
+3. 톤앤매너 및 타이포그래피: 신뢰성과 전달력을 극대화할 수 있는 프로페셔널한 컬러 팔레트(예: Deep Slate, Steel Blue, Accent Magenta 등) 및 타이포그래피 굵기 조절 전략
+4. 인포그래픽 연출 스토리보드: 본 데이터를 인포그래픽으로 구성할 경우, 정보 전달 흐름을 3단계로 구성한 비주얼 스토리보드 흐름도 작성`
+    },
+    {
+      id: 9,
+      category: "IDEATION",
+      title: "💡 사회문제 해결용 연구 주제 발굴",
+      subtitle: "빠르게 변화하는 사회적 변화와 첨단 기술 트렌드를 창의적으로 연계하여, 실증적이고 파급력 있는 신규 연구 주제와 비전을 개척합니다.",
+      labTip: "Perplexity나 실시간 수집 뉴스 아카이브와 함께 사용하세요. 최신 미디어 기사나 트렌드 요약을 선 수집하여 입력하면 현실성 높은 아젠다가 완성됩니다.",
+      promptText: `너는 지속 가능한 사회적 변화와 공공 가치를 탐구하는 융합 연구 기획자이자 정책 아카데미 석학이야. 아래에 제시하는 최신 사회 흐름과 기술 트렌드를 분석하여, 실증적 가치와 강력한 현실 임팩트를 창출할 수 있는 독창적인 연구 주제 5가지를 발굴해줘.
+
+[최신 사회적 변화 / 기술 트렌드 키워드 및 뉴스 요약]:
+"[이곳에 최근 주목하고 있는 사회 문제나 결합하고 싶은 기술 트렌드 키워드, 혹은 관련 미디어 뉴스 내용을 적어주세요]"
+
+연구 주제 제안 규격:
+제시되는 5가지 연구 아젠다 각각에 대해 아래 양식을 완벽히 갖추어 작성해줘.
+- 연구 제목: 눈길을 이끌며 아젠다를 직관적으로 파악할 수 있는 품격 있고 강렬한 학술용 제목
+- 연구 배경 및 필요성: 해당 연구가 현시점에 반드시 실행되어야 하는 이유와 기존 선행 연구와의 학술적 격차(Gap) 증명
+- 예상되는 사회적 임팩트: 본 연구 성과가 법제도, 공공 가이드라인, 혹은 소셜 벤처 생태계에 가져올 긍정적인 파급력과 사회적 가치(SV) 지수 기대치
+- 주요 조사 및 실증 대상: 가설 검증을 위해 반드시 인터뷰하거나 설문, 실태 수집해야 할 타겟 표본 범위 제시`
     }
   ]);
 
@@ -1796,73 +1850,6 @@ export default function App() {
                 </div>
               </div>
 
-              {/* 프롬프트 아이디어 실시간 현황판 (Bulletin Board) */}
-              <div className="bg-white rounded-[2.5rem] border border-gray-100 p-6 md:p-8 shadow-xs space-y-6">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-100 pb-4 text-start">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <MessageSquare className="w-5 h-5 text-[#D81159] shrink-0" />
-                      <h3 className="text-lg font-black text-slate-900 tracking-tight">프롬프트 제안 & 개발 현황판</h3>
-                    </div>
-                    <p className="text-slate-400 text-xs font-semibold">
-                      연구원분들이 제안한 소중한 아이디어가 검토 및 제작되는 실시간 진행 상황입니다.
-                    </p>
-                  </div>
-                  <span className="bg-pink-50 text-[#D81159] text-[10px] font-black px-3.5 py-1.5 rounded-full uppercase tracking-wider self-start sm:self-center shrink-0 border border-pink-100/80">
-                    📡 실시간 상태 연동 중
-                  </span>
-                </div>
-
-                <div className="overflow-x-auto rounded-2xl border border-slate-100">
-                  <table className="w-full text-left text-xs border-collapse">
-                    <thead>
-                      <tr className="bg-slate-50 border-b border-slate-100 text-slate-500 font-extrabold uppercase tracking-wider">
-                        <th className="py-3 px-4 w-12 text-center">번호</th>
-                        <th className="py-3 px-4">제안 내용</th>
-                        <th className="py-3 px-4 w-32">제안자</th>
-                        <th className="py-3 px-4 w-32">제안일</th>
-                        <th className="py-3 px-4 w-36 text-center">진행 상태</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100 font-semibold text-slate-700">
-                      {submittedPromptIdeas.map((idea, index) => (
-                        <tr key={idea.id} className="hover:bg-slate-50/50 transition duration-150">
-                          <td className="py-4 px-4 text-center font-mono text-slate-400">{submittedPromptIdeas.length - index}</td>
-                          <td className="py-4 px-4 pr-6">
-                            <p className="text-slate-800 leading-relaxed font-bold break-words max-w-xl">
-                              {idea.content}
-                            </p>
-                          </td>
-                          <td className="py-4 px-4 text-slate-500 flex items-center gap-1.5 whitespace-nowrap">
-                            <div className="w-5 h-5 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-[10px] font-black border border-slate-200 shrink-0">
-                              {idea.author[0]}
-                            </div>
-                            <span>{idea.author}</span>
-                          </td>
-                          <td className="py-4 px-4 text-slate-400 font-mono whitespace-nowrap">{idea.date}</td>
-                          <td className="py-4 px-4 text-center whitespace-nowrap">
-                            <div className="flex flex-col items-center gap-1">
-                              <span className={`text-[9px] font-black px-2.5 py-1 rounded-md tracking-wider uppercase border ${
-                                idea.hasImplemented 
-                                  ? "bg-emerald-50 text-emerald-600 border-emerald-100" 
-                                  : "bg-amber-50 text-amber-600 border-amber-100"
-                              }`}>
-                                {idea.status}
-                              </span>
-                              {idea.hasImplemented && (
-                                <span className="text-[8px] font-black text-emerald-500 flex items-center gap-0.5 animate-pulse">
-                                  ✓ 라이브러리 반영 완료
-                                </span>
-                              )}
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
               {/* Submit ideas banner (Dark theme card) */}
               <div className="bg-gradient-to-br from-slate-900 via-slate-850 to-slate-950 text-white rounded-[2.5rem] p-8 md:p-10 shadow-xl border border-slate-800 flex flex-col lg:flex-row justify-between items-stretch gap-8 relative overflow-hidden">
                 {/* Decorative background flare */}
@@ -2476,7 +2463,7 @@ export default function App() {
                                   setActiveTab("DeepInsight_DB");
                                   handleDownloadCSV();
                                 }} 
-                                className="px-3 py-1.5 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition text-[10px] shrink-0 font-bold"
+                                className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200/60 rounded-lg transition text-[10px] shrink-0 font-bold"
                               >
                                 즉시 백업 받기
                               </button>
