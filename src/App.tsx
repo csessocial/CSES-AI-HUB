@@ -916,7 +916,7 @@ export default function App() {
               href="https://csessocial.github.io/sv-book/"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 px-4 py-2.5 rounded-full bg-gradient-to-r from-slate-900 to-slate-800 text-white font-extrabold text-[11px] md:text-xs hover:from-[#D81159] hover:to-[#b50e49] active:scale-95 transition-all duration-200 shadow-sm border border-slate-800 whitespace-nowrap cursor-pointer group"
+              className="flex items-center gap-1 px-4 py-2.5 rounded-full bg-[#D81159] hover:bg-[#c40e4f] text-white font-extrabold text-[11px] md:text-xs active:scale-95 transition-all duration-200 shadow-sm border border-[#D81159] whitespace-nowrap cursor-pointer group"
             >
               <span>SV Book 바로가기</span>
               <span className="group-hover:translate-x-0.5 transition-transform">📖</span>
@@ -1850,20 +1850,20 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Submit ideas banner (Dark theme card) */}
-              <div className="bg-gradient-to-br from-slate-900 via-slate-850 to-slate-950 text-white rounded-[2.5rem] p-8 md:p-10 shadow-xl border border-slate-800 flex flex-col lg:flex-row justify-between items-stretch gap-8 relative overflow-hidden">
+              {/* Submit ideas banner (Comfortable light theme card) */}
+              <div className="bg-gradient-to-br from-[#FFF5F7] via-white to-pink-50/30 text-slate-800 rounded-[2.5rem] p-8 md:p-10 shadow-sm border border-pink-100 flex flex-col lg:flex-row justify-between items-stretch gap-8 relative overflow-hidden">
                 {/* Decorative background flare */}
-                <div className="absolute top-0 right-0 w-80 h-80 bg-[#D81159]/10 rounded-full blur-3xl pointer-events-none" />
+                <div className="absolute top-0 right-0 w-80 h-80 bg-[#D81159]/5 rounded-full blur-3xl pointer-events-none" />
                 <div className="absolute -bottom-10 -left-10 w-60 h-60 bg-purple-500/5 rounded-full blur-3xl pointer-events-none" />
 
                 {/* Left 60% */}
                 <div className="lg:w-[55%] flex gap-6 items-start">
-                  <div className="w-16 h-16 rounded-full bg-[#D81159]/20 flex items-center justify-center border border-[#D81159]/30 shrink-0 shadow-lg shadow-[#D81159]/10">
+                  <div className="w-16 h-16 rounded-full bg-[#D81159]/10 flex items-center justify-center border border-[#D81159]/20 shrink-0 shadow-xs">
                     <Lightbulb className="w-8 h-8 text-[#D81159] animate-pulse" />
                   </div>
                   <div className="space-y-3">
-                    <h3 className="text-2xl font-black tracking-tight text-white">프롬프트 제안하기</h3>
-                    <p className="text-slate-300 text-sm leading-relaxed font-medium">
+                    <h3 className="text-2xl font-black tracking-tight text-slate-900">프롬프트 제안하기</h3>
+                    <p className="text-slate-500 text-sm leading-relaxed font-medium">
                       연구 수행 중 AI가 해결해주었으면 하는 작업이 있다면 언제든 알려주세요.
                       연구원님의 피드백을 바탕으로 최적화된 프롬프트를 설계하여 Lab 섹션에 반영합니다.
                     </p>
@@ -1871,13 +1871,13 @@ export default function App() {
                 </div>
 
                 {/* Right 40% Form */}
-                <div className="lg:w-[40%] flex flex-col justify-between gap-4 bg-white/5 p-6 rounded-3xl border border-white/10 backdrop-blur-xs relative z-10">
+                <div className="lg:w-[40%] flex flex-col justify-between gap-4 bg-white/60 p-6 rounded-3xl border border-pink-100/80 backdrop-blur-xs relative z-10">
                   {isIdeaSubmitted ? (
                     <div className="flex flex-col items-center justify-center text-center py-6 space-y-3">
-                      <span className="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold">✓</span>
+                      <span className="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center font-bold">✓</span>
                       <div>
-                        <h4 className="text-sm font-bold text-white">제안이 성공적으로 제출되었습니다!</h4>
-                        <p className="text-xs text-slate-400 mt-1">소중한 제안을 바탕으로 프롬프트를 검토 및 보완하겠습니다.</p>
+                        <h4 className="text-sm font-bold text-slate-900">제안이 성공적으로 제출되었습니다!</h4>
+                        <p className="text-xs text-slate-500 mt-1">소중한 제안을 바탕으로 프롬프트를 검토 및 보완하겠습니다.</p>
                       </div>
                       <button 
                         onClick={() => {
@@ -1896,7 +1896,7 @@ export default function App() {
                         value={promptIdea}
                         onChange={(e) => setPromptIdea(e.target.value)}
                         rows={3}
-                        className="w-full bg-slate-900/40 text-slate-200 placeholder-slate-500 text-xs rounded-xl p-3 border border-white/10 outline-none focus:border-[#D81159] transition resize-none leading-relaxed"
+                        className="w-full bg-white text-slate-800 placeholder-slate-400 text-xs rounded-xl p-3 border border-pink-100 outline-none focus:border-[#D81159] transition resize-none leading-relaxed"
                       />
                       <button 
                         onClick={() => {
@@ -1915,7 +1915,7 @@ export default function App() {
                         disabled={promptIdea.trim() === ""}
                         className="w-full py-3 bg-[#D81159] hover:bg-[#c40e4f] text-white text-xs font-black rounded-full transition-all duration-300 cursor-pointer disabled:opacity-50 disabled:pointer-events-none tracking-wider uppercase shadow-md shadow-[#D81159]/10 shrink-0"
                       >
-                        SUBMIT IDEA
+                        제안 제출하기
                       </button>
                     </>
                   )}
