@@ -81,158 +81,315 @@ export interface PromptTemplate {
 export const SEED_COURSES: Course[] = [
   {
     id: 101,
-    title: "[K-MOOC] 사회적 가치 아카데미 (종합 입문)",
-    provider: "K-MOOC",
+    title: "[부스트코스] Generative AI & Large Language Model 기초 실무",
+    provider: "부스트코스",
     level: "입문",
-    category: "종합",
-    tags: ["SV 측정", "사회공헌", "기본이론"],
-    duration: "총 8주 (주당 2시간)",
-    description: "사회적가치(Social Value)의 탄생 배경부터 개념 정립, 그리고 핵심 측정 방법론까지 포괄적으로 배울 수 있는 K-MOOC 종합 입문 과정입니다.",
+    category: "디지털 실무",
+    tags: ["생성형 AI", "LLM 기초", "ChatGPT", "프롬프트"],
+    duration: "총 4주 (주당 3시간)",
+    description: "생성형 AI의 작동 원리부터 GPT, Claude 등 주요 LLM 도구를 실무에 바로 도입할 수 있는 기본기 중심의 실무 입문 강의입니다.",
     curriculum: [
-      "1주차: 자본주의의 변화와 사회적 가치의 당위성",
-      "2주차: CSES 사회적 가치 측정 가이드라인 정독",
-      "3주차: 사회적 성과의 측정 및 화폐화 기초 공식",
-      "4주차: 주요 이해관계자 분석 및 경제적 이익 연계"
+      "1주차: 생성형 AI의 등장배경과 거대언어모델(LLM) 원리",
+      "2주차: 직무 효율화를 위한 효과적인 프롬프트 작성 공식",
+      "3주차: ChatGPT 및 Claude 주요 기능 및 실습 활용",
+      "4주차: 인공지능 윤리 및 사내 보안 가이드라인 준수"
     ],
     isHighlight: false,
-    link: "http://www.kmooc.kr"
+    link: "https://www.boostcourse.org"
   },
   {
     id: 102,
-    title: "[한국표준협회] ESG 정보공시 및 글로벌 지표 수립 실무",
+    title: "[한국표준협회] 업무 자동화를 위한 Python 및 AI 데이터 분석 실무",
     provider: "한국표준협회",
     level: "중급",
-    category: "ESG 공시",
-    tags: ["ESG", "공시 표준", "GRI / ISSB"],
-    duration: "총 4주 (주당 4시간)",
-    description: "한국표준협회가 제공하는 ISSB 및 GRI 글로벌 가이드라인을 기반으로 기업의 환경, 사회, 지배구조 데이터를 체계적으로 수집하고 정량 공시하는 고품질 실무 특화 과정입니다.",
+    category: "디지털 실무",
+    tags: ["파이썬", "데이터 분석", "Pandas", "자동화"],
+    duration: "총 6주 (주당 4시간)",
+    description: "단순 반복 행정 업무를 파이썬 코딩과 AI 분석 라이브러리(Pandas, NumPy)를 활용하여 원스톱으로 자동화하는 실전형 중급 마스터 코스입니다.",
     curriculum: [
-      "1주차: 글로벌 ESG 공시 의무화 동향 분석",
-      "2주차: 중요성 평가(Double Materiality) 방법론 및 실무 실습",
-      "3주차: Scope 3 탄소 배출공식 및 공급망 임팩트 측정",
-      "4주차: 감사 대응을 위한 고보증 ESG 보고서 최종 구성법"
+      "1주차: 데이터 수집 및 정제용 파이썬 핵심 기초 문법",
+      "2주차: Pandas/NumPy를 활용한 엑셀 보고서 자동 병합",
+      "3주차: 데이터 시각화 라이브러리(Matplotlib, Seaborn) 분석 실무",
+      "4주차: 공공 데이터 오픈 API 연계 및 자동 수집 에이전트 구축"
     ],
     isHighlight: false,
     link: "https://www.oksa.or.kr"
   },
   {
     id: 103,
-    title: "[부스트코스] ChatGPT 프롬프트 엔지니어링 실무 및 업무 자동화",
-    provider: "부스트코스",
-    level: "고급",
-    category: "디지털 실무",
-    tags: ["AI 프롬프트", "데이터 기획", "Gemini 융합"],
-    duration: "총 3주 (주당 6시간)",
-    description: "부스트코스에서 제공하는 AI 프롬프트 응용 과정으로, 생성형 AI와 Large Language Model을 활용하여 연구 및 행정 자동화 워크플로우를 완벽 구축합니다.",
-    curriculum: [
-      "1주차: 생성형 AI 기본 모델과 프롬프트 패턴 매칭 연구",
-      "2주차: RAG를 활용한 SV 성과 논문 통합 요약 대행 설계",
-      "3주차: 프롬프트 인젝션 방지 및 고신뢰성 에이전트 워크플로우 테스트"
-    ],
-    isHighlight: false,
-    link: "https://www.boostcourse.org"
-  },
-  {
-    id: 104,
-    title: "[K-MOOC] 사회적 혁신가 온보딩 코스",
+    title: "[K-MOOC] 파이썬 머신러닝 & 딥러닝 인공지능 수학 입문",
     provider: "K-MOOC",
     level: "입문",
-    category: "사회공헌",
-    tags: ["혁신 모델", "임팩트 투자", "소셜 비즈니스"],
-    duration: "단기 2일 마스터",
-    description: "K-MOOC과 사회적 기업들이 엄선한 체인지메이커 입문 과정으로, 사회 문제를 비즈니스 모델을 선도하여 해결하려는 차세대 소셜 벤처 리더들을 위한 스타터 패키지 강의입니다.",
+    category: "디지털 실무",
+    tags: ["머신러닝", "딥러닝", "수학 기초", "AI 핵심"],
+    duration: "총 8주 (주당 2시간)",
+    description: "머신러닝과 딥러닝의 핵심 알고리즘 뒤에 숨겨진 수학적 배경을 이해하고, 실무 응용을 위한 개념적 기초 체력을 기르는 K-MOOC 대표 학술/실무 강좌입니다.",
     curriculum: [
-      "1주차: 사회 혁신의 메커니즘과 성공적 비즈니스 케이스 스터디",
-      "2주차: 린 소셜 캔버스를 통한 가설 검증과 시제품 구상"
+      "1주차: 인공지능을 위한 기초 선형대수학과 통계학 개념",
+      "2주차: 지도학습 and 비지도학습 알고리즘의 작동 원리",
+      "3주차: 인공신경망(ANN) and 역전파 알고리즘 수식 직관 이해",
+      "4주차: 선형 회귀 및 로지스틱 분류 알고리즘 실전 실습"
     ],
     isHighlight: false,
     link: "http://www.kmooc.kr"
   },
   {
-    id: 105,
-    title: "[한국표준협회] 지역 소멸 방지 및 로컬 펀딩 대안 모델링",
-    provider: "한국표준협회",
-    level: "중급",
-    category: "지역혁신",
-    tags: ["지역 활성화", "인구통계", "SROI 측정"],
-    duration: "총 6주 (주당 3시간)",
-    description: "한국표준협회 로컬 혁신 전용 과정으로, 인구 감소와 소멸 위기에 놓인 지자체의 데이터를 분석하고 SROI(사회적 투자수익률) 시각화 대안을 제공합니다.",
+    id: 104,
+    title: "[부스트코스] RAG 기반의 Custom GPTs 및 사내 데이터 학습 챗봇 구축",
+    provider: "부스트코스",
+    level: "고급",
+    category: "디지털 실무",
+    tags: ["Custom GPTs", "RAG 에이전트", "사내 데이터", "AI 챗봇"],
+    duration: "총 3주 (주당 6시간)",
+    description: "외부로의 기밀 유출 걱정 없이 사내 문서(PDF, CSV, MD 등)를 안전하게 임베딩(Embedding)하고, 특정 실무 맞춤형 RAG 에이전트 및 챗봇을 직접 배포하는 실습 중심의 고급 코스입니다.",
     curriculum: [
-      "1주차: 대한민국 로컬 위기 인구통계 지리정보시스템 입문",
-      "2주차: 고향사랑기부제와 로컬 기금 사업의 SV 산식 설계",
-      "3주차: 지역혁신 거점 비즈니스의 장기 사회적 성과 시계열 분석"
+      "1주차: Custom GPTs 설계 아키텍처 및 API Action 연동법",
+      "2주차: 임베딩 벡터 데이터베이스 개념 및 RAG 검색 파이프라인 최적화",
+      "3주차: LangChain 프레임워크를 활용한 나만의 커스텀 지식 기반 AI 개발"
+    ],
+    isHighlight: false,
+    link: "https://www.boostcourse.org"
+  },
+  {
+    id: 105,
+    title: "[한국표준협회] 실무 맞춤형 No-Code AI 및 RPA 업무 자동화 워크숍",
+    provider: "한국표준협회",
+    level: "입문",
+    category: "디지털 실무",
+    tags: ["노코드 AI", "RPA", "업무 자동화", "Zapier"],
+    duration: "단기 2일 마스터 (총 16시간)",
+    description: "복잡한 코드 한 줄 없이도 Zapier, Make, Microsoft Power Automate 등 대표적인 노코드(No-Code) 툴에 생성형 AI API를 연계하여 완전 무인 자동화 워크플로우를 완성하는 단기 집중 워크숍입니다.",
+    curriculum: [
+      "1일차: 노코드 자동화 개념 이해 및 Zapier 기본 트리거-액션 마스터",
+      "2일차: GPT API와 노코드 연계, 메일 수신 시 자동 분석 및 보고서 전송 구축"
     ],
     isHighlight: false,
     link: "https://www.oksa.or.kr"
   },
   {
     id: 106,
-    title: "[K-MOOC] 글로벌 사회공헌 트렌드 & Net zero 세미나",
+    title: "[K-MOOC] 자연어 처리(NLP) 및 최신 트랜스포머 아키텍처 이해",
     provider: "K-MOOC",
     level: "고급",
-    category: "사회공헌",
-    tags: ["탄소중립", "SDGs", "글로벌 동향"],
-    duration: "총 5주 (주당 4시간)",
-    description: "K-MOOC 명품 강좌 중 하나로, 글로벌 기업들이 구사하는 대규모 기후 및 생물다양성 공헌 프로젝트와 넷제로 로드맵 연계형 SV 관리 기법을 깊이 있게 다룹니다.",
+    category: "디지털 실무",
+    tags: ["NLP", "트랜스포머", "BERT", "GPT 아키텍처"],
+    duration: "총 6주 (주당 3시간)",
+    description: "현대 생성형 AI 혁신을 견인한 Transformer 구조와 Attention 메커니즘을 상세히 해부하고, 자연어 처리(NLP) 태스크에 대한 미세조정(Fine-Tuning)까지 심도 있게 탐구하는 고급 전문 개발 교육입니다.",
     curriculum: [
-      "1주차: 과학기반감축목표 이니셔티브(SBTi) 넷제로 동향 요약",
-      "2주차: 개발도상국 현지 사회공헌의 UN SDGs 기여도 계량 평가",
-      "3주차: 생물다양성 손실(Nature Positive) 화폐 가치를 산출하는 혁신 프레임워크"
+      "1주차: RNN과 LSTM을 넘어선 Self-Attention 메커니즘 개요",
+      "2주차: Transformer Encoder-Decoder 아키텍처 핵심 해부",
+      "3주차: 사전학습 모델(BERT, GPT)의 원리와 파인튜닝 실무 적용"
     ],
     isHighlight: false,
     link: "http://www.kmooc.kr"
   },
   {
     id: 107,
-    title: "[부스트코스] SV 데이터 기반 보고서 자동화 및 데이터 시각화 워크숍",
+    title: "[부스트코스] 딥러닝 모델 배포 및 실전 MLOps 구축 가이드",
     provider: "부스트코스",
-    level: "중급",
+    level: "고급",
     category: "디지털 실무",
-    tags: ["SV 데이터", "보고서 자동화", "데이터 시각화", "실습 워크숍"],
-    duration: "총 1일 집중 (8시간 오프라인 실습, 노트북 지참)",
-    description: "부스트코스의 대표적인 실무 자동화 워크숍으로, 연구원들의 실제 데이터를 활용하여 AI 기반 보고서를 작성하고 시각화 차트를 만드는 실전형 특화 교육입니다.",
+    tags: ["MLOps", "모델 배포", "CI/CD", "파이프라인"],
+    duration: "총 4주 (주당 4시간)",
+    description: "연구실 단계를 벗어나 로컬에 빌드된 AI 모델을 안정적인 서비스 형태로 배포하고, 지속적인 모니터링과 데이터 피드백 루프를 결합하는 MLOps 핵심 생태계 실무 강의입니다.",
     curriculum: [
-      "오전: 생성형 AI를 통한 정성/정량 사회성과 보고서 초안 골자 생성",
-      "오후 1: 파이썬 및 BI 도구를 활용한 데이터 시각화 차트 자동 매핑",
-      "오후 2: 개인별 실제 데이터 적용 워크숍 및 1대1 코칭 피드백"
+      "1주차: FastAPI를 활용한 경량 AI 인프라 서비스 API 서버 빌드",
+      "2주차: Docker 컨테이너라이제이션을 통한 일관성 있는 배포 환경 구성",
+      "3주차: MLflow를 사용한 실험 이력 관리 및 가중치 파일 관리 가이드"
     ],
     isHighlight: true,
     link: "https://www.boostcourse.org"
   },
   {
     id: 108,
-    title: "[부스트코스] SPC/DBL 성과 예측을 위한 실전 파이썬 코딩 입문",
-    provider: "부스트코스",
-    level: "입문",
-    category: "디지털 실무",
-    tags: ["SPC 예측", "DBL 시뮬레이션", "파이썬 입문", "코딩 헬프데스크"],
-    duration: "총 4주 (주당 3시간, 오프라인 해커톤 포함)",
-    description: "어려운 수학 이론 없이 부스트코스만의 친절한 인터랙티브 환경을 통해 SPC/DBL 성과 예측 데이터를 파이썬 코드로 손쉽게 시뮬레이션해보는 입문 강좌입니다.",
-    curriculum: [
-      "1주차: 파이썬 기초 및 데이터 다루기 (Pandas, Numpy)",
-      "2주차: SPC 사회적 가치 측정 가이드라인 공식 수식 코딩화",
-      "3주차: 시나리오별 DBL 성과 시뮬레이션 모델 구현 및 검증",
-      "4주차: 문제 해결형 해커톤 - 실제 원내 데이터를 활용한 성과 예측"
-    ],
-    isHighlight: true,
-    link: "https://www.boostcourse.org"
-  },
-  {
-    id: 109,
-    title: "[한국표준협회] Custom GPTs 내부 연구 데이터를 학습한 맞춤형 AI 챗봇 제작",
+    title: "[한국표준협회] 프롬프트 엔지니어링 마스터 클래스: 기획부터 고급 최적화까지",
     provider: "한국표준협회",
-    level: "고급",
+    level: "중급",
     category: "디지털 실무",
-    tags: ["Custom GPTs", "연구원 맞춤형", "RAG 에이전트", "보안 가이드라인"],
+    tags: ["프롬프트 엔지니어링", "Few-Shot", "CoT", "최적화"],
     duration: "총 2주 (실습 중심 온/오프라인 병행)",
-    description: "한국표준협회 전문 강사진의 지도 아래 내부 연구 데이터 및 보안 가이드라인을 철저히 준수하면서 연구 실무용 Custom AI 에이전트를 제작해 보는 최정예 과정입니다.",
+    description: "단순히 AI에게 말을 거는 단계를 넘어, Few-Shot 러닝, Chain-of-Thought(CoT), ReAct 등의 고급 엔지니어링 기법을 접목하여 결과의 정밀도를 99% 이상 끌어올리는 특화 과정입니다.",
     curriculum: [
-      "1주차: OpenAI GPTs 및 Custom GPTs 아키텍처 및 설정 방법론",
-      "2주차: CSES 내부 보고서 PDF/CSV 데이터를 임베딩하여 프라이빗 RAG 구현",
-      "3주차: 정보 유출 방지를 위한 기업용 보안 가이드라인 검증 및 실전 배포"
+      "1주차: 제로샷/퓨샷 기법 및 구체적 시스템 프롬프트(Role Playing) 설계법",
+      "2주차: 복잡한 논리 해결을 위한 Chain-of-Thought 및 ReAct 추론 구조화 실무"
     ],
     isHighlight: true,
     link: "https://www.oksa.or.kr"
+  },
+  {
+    id: 109,
+    title: "[K-MOOC] 웹 브라우저 안에서 구동하는 실전 TensorFlow.js 인공지능 개발",
+    provider: "K-MOOC",
+    level: "중급",
+    category: "디지털 실무",
+    tags: ["TensorFlow.js", "웹 AI", "컴퓨터 비전", "자바스크립트"],
+    duration: "총 5주 (주당 3시간)",
+    description: "서버 자원의 부담 없이 사용자의 웹 브라우저(Client-side) 내에서 실시간 웹캠 모션 인식, 객체 탐지, 텍스트 분석 모델을 구동하는 자바스크립트 기반 실전 웹 AI 구현 과정입니다.",
+    curriculum: [
+      "1주차: 브라우저 환경에서의 TensorFlow.js 작동 구조 및 전처리",
+      "2주차: 웹캠을 통한 실시간 컴퓨터 비전(Object Detection) 모델 서빙",
+      "3주차: 브라우저 내 경량 모델 전이학습(Transfer Learning) 실습"
+    ],
+    isHighlight: true,
+    link: "http://www.kmooc.kr"
+  },
+  {
+    id: 110,
+    title: "[부스트코스] PyTorch로 시작하는 인공지능 딥러닝 핵심 기초",
+    provider: "부스트코스",
+    level: "중급",
+    category: "디지털 실무",
+    tags: ["PyTorch", "딥러닝", "인공신경망", "모델 학습"],
+    duration: "총 5주 (주당 4시간)",
+    description: "연구 분석 및 데이터 처리에 필수적인 글로벌 대표 딥러닝 프레임워크 PyTorch의 기초 텐서 계산부터 시작하여, 커스텀 데이터셋을 구성하고 인공신경망 모델을 직접 개발해보는 실습 코스입니다.",
+    curriculum: [
+      "1주차: PyTorch 텐서 기본 연산 및 선형 회귀 기초 모델 구성",
+      "2주차: 경사하강법과 역전파 최적화 알고리즘 구현 실습",
+      "3주차: CNN을 활용한 정형/비정형 이미지 피처 추출 기법",
+      "4주차: 인공신경망 과적합(Overfitting) 방지 및 모델 검증 가이드"
+    ],
+    isHighlight: false,
+    link: "https://www.boostcourse.org"
+  },
+  {
+    id: 111,
+    title: "[부스트코스] 모두를 위한 AI 비즈니스 혁신과 업무 생산성 패키지",
+    provider: "부스트코스",
+    level: "입문",
+    category: "디지털 실무",
+    tags: ["비즈니스 AI", "생산성", "업무 자동화", "Claude"],
+    duration: "총 3주 (주당 2시간)",
+    description: "비개발 연구직군도 손쉽게 이해할 수 있는 AI 도구 활용 극대화 과정으로, 연구 기획, 논문 초록 정제, 업무 일정 관리 등에 인공지능 비서를 접목하는 실전 노하우를 습득합니다.",
+    curriculum: [
+      "1주차: ChatGPT, Claude, Gemini 실무적 장단점 및 직무 정합성 분석",
+      "2주차: 연구 성과 보고서의 핵심 메시지 고속 필터링 및 요약 자동화",
+      "3주차: 마크다운(Markdown) 문서를 활용한 사내 업무 연계 및 자동 정제"
+    ],
+    isHighlight: false,
+    link: "https://www.boostcourse.org"
+  },
+  {
+    id: 112,
+    title: "[부스트코스] 모두를 위한 딥러닝 핵심 개념과 데이터 실무 분석",
+    provider: "부스트코스",
+    level: "입문",
+    category: "디지털 실무",
+    tags: ["인공지능 개론", "딥러닝 기초", "데이터 시각화", "AI 입문"],
+    duration: "총 4주 (주당 3시간)",
+    description: "수학적 지식이 부족해도 직관적으로 이해할 수 있는 딥러닝 마스터 클래스로, 전 세계 50만 명 이상이 수강한 검증된 딥러닝 입문 바이블 강의의 실습 특화 패키지입니다.",
+    curriculum: [
+      "1주차: 인공지능과 머신러닝의 핵심 메커니즘과 분류 모델",
+      "2주차: 텐서플로우 기반의 간단한 선형 분류기 실전 동작 원리",
+      "3주차: 다층 퍼셉트론과 깊은 신경망의 학습 성능 튜닝 노하우",
+      "4주차: 정형 데이터에 숨겨진 연관 관계 시각화 및 예측 분석"
+    ],
+    isHighlight: false,
+    link: "https://www.boostcourse.org"
+  },
+  {
+    id: 113,
+    title: "[한국표준협회] 생성형 AI 기반 비즈니스 문서 기획 및 슬라이드 디자인 워크숍",
+    provider: "한국표준협회",
+    level: "중급",
+    category: "디지털 실무",
+    tags: ["문서 기획", "PPT 디자인", "보고서 생성", "워크숍"],
+    duration: "단기 2일 집중 (총 16시간)",
+    description: "연구원들을 위한 맞춤형 비즈니스 PPT 시나리오 작성 특화 강좌로, ChatGPT로 보고서 텍스트의 구조를 짜고 Gamma, Beautiful.ai 등의 디자인 도구를 활용해 15분 만에 슬라이드를 배포하는 과정입니다.",
+    curriculum: [
+      "1일차: AI를 통한 사업 기획서 아웃라인 전개 및 목차 자동 다듬기",
+      "2일차: 슬라이드 빌더와 생성형 AI 연계를 통한 고신뢰성 발표 자료 완성"
+    ],
+    isHighlight: false,
+    link: "https://www.oksa.or.kr"
+  },
+  {
+    id: 114,
+    title: "[한국표준협회] 실무 연구자를 위한 AI 특허 정보 분석 및 기술 보고서 자동 수집",
+    provider: "한국표준협회",
+    level: "고급",
+    category: "디지털 실무",
+    tags: ["특허 분석", "기술 보고서", "데이터 크롤링", "AI 연구"],
+    duration: "총 4주 (주당 3시간)",
+    description: "국내외 주요 기술 특허 명세서와 연구 데이터를 AI 기반 분석 모델로 자동 매핑하고 수집 기법을 익히는 실무형 기술 교육입니다.",
+    curriculum: [
+      "1주차: 글로벌 주요 특허 정보 사이트 자동 분석 프레임워크 구축",
+      "2주차: 기술 키워드 및 클러스터링을 활용한 선행 기술 조사 설계",
+      "3주차: 파이썬 기반 데이터 수집 패키지 연계 및 크롤러 코딩 실습",
+      "4주차: 기술 동향 시각화 분석 및 최종 예측 보고서 레이아웃 생성"
+    ],
+    isHighlight: false,
+    link: "https://www.oksa.or.kr"
+  },
+  {
+    id: 115,
+    title: "[한국표준협회] ESG 및 사회성과 평가서 자동 생성을 위한 대형 프롬프트 아키텍트 실습",
+    provider: "한국표준협회",
+    level: "고급",
+    category: "디지털 실무",
+    tags: ["ESG 평가", "사회성과", "프롬프트 아키텍트", "대형 프롬프트"],
+    duration: "단기 3일 마스터 (총 24시간)",
+    description: "GRI 2026, ISSB 지표 등 복잡한 사회성과 평가지표들을 원격 연동하여 기업의 경영 성과 보고서 원본을 대량 요약 분석하고 정량 데이터를 신속히 가공하는 최고 난이도의 프롬프트 설계 과정입니다.",
+    curriculum: [
+      "1일차: 글로벌 공시 규범 기준에 입각한 원데이터 가공 프롬프트 엔지니어링",
+      "2일차: Hallucination(정보 왜곡) 제로 보증을 위한 Context 분기 주입 기술",
+      "3일차: 최종 산출된 ESG 지수 요약본의 한글 파일 표 일괄 변환 및 배포"
+    ],
+    isHighlight: true,
+    link: "https://www.oksa.or.kr"
+  },
+  {
+    id: 116,
+    title: "[K-MOOC] 인공지능과 윤리적 가치: 알고리즘 설계와 편향적 지표 조율",
+    provider: "K-MOOC",
+    level: "입문",
+    category: "디지털 실무",
+    tags: ["AI 윤리", "알고리즘 감사", "공정성 지표", "가치 조율"],
+    duration: "총 6주 (주당 2시간)",
+    description: "인공지능 시스템이 초래할 수 있는 사회적 불평등과 데이터 편향성을 체계적으로 추적하고, 이를 해결하기 위한 기술적/정책적 알고리즘 감사 프레임워크를 정립하는 인문/기술 융합 특화 강의입니다.",
+    curriculum: [
+      "1주차: 알고리즘 편향성의 역사와 인공지능 공정성(Fairness) 기본 척도",
+      "2주차: 데이터 샘플링 및 레이블 편향을 자동으로 보정하는 파이썬 감사 도구",
+      "3주차: Explainable AI(설명 가능한 인공지능) 원리와 실무 모델 적용",
+      "4주차: 글로벌 기업 및 주요국 정부의 고신뢰성 AI 가이드라인 규제 분석"
+    ],
+    isHighlight: false,
+    link: "http://www.kmooc.kr"
+  },
+  {
+    id: 117,
+    title: "[K-MOOC] 파이썬 기반 빅데이터 정량 통계 분석 및 다차원 데이터 시각화",
+    provider: "K-MOOC",
+    level: "중급",
+    category: "디지털 실무",
+    tags: ["정량 분석", "빅데이터", "데이터 시각화", "Seaborn"],
+    duration: "총 8주 (주당 3시간)",
+    description: "사회과학 및 비즈니스 의사결정에 널리 활용되는 회귀분석, 상관분석, 요인분석 등 고도화 통계 모형을 파이썬 라이브러리로 수월하게 구현하고, 복잡한 다차원 데이터를 직관적인 시각화 차트로 연출하는 마스터 강의입니다.",
+    curriculum: [
+      "1주차: 표본 데이터에 적합한 가설 검정 및 기초 정량 통계 핵심 개념",
+      "2주차: 다중회귀분석 및 시계열 추세 분석을 위한 통계 모델 파이프라인",
+      "3주차: Seaborn 및 Plotly 라이브러리를 이용한 인터랙티브 대시보드 시각화",
+      "4주차: 사회적 지표 연구용 공공 통계 데이터 정제 해커톤 실습"
+    ],
+    isHighlight: false,
+    link: "http://www.kmooc.kr"
+  },
+  {
+    id: 118,
+    title: "[K-MOOC] 인공지능 이미지 분석 기초와 컴퓨터 비전 딥러닝 실무",
+    provider: "K-MOOC",
+    level: "고급",
+    category: "디지털 실무",
+    tags: ["이미지 분석", "컴퓨터 비전", "CNN", "딥러닝"],
+    duration: "총 7주 (주당 3시간)",
+    description: "비정형 이미지 및 영상 자원에 내포된 유의미한 객체를 검출하고, 세분화(Segmentation) 및 광학문자인식(OCR) 라이브러리를 활용하여 텍스트 자료로 완전 변환하는 딥러닝 기반의 영상 처리 고급 실무 과정입니다.",
+    curriculum: [
+      "1주차: 이미지 데이터 구조 이해 및 OpenCV 라이브러리 전처리 필수 기법",
+      "2주차: 합성곱신경망(CNN) 기초 아키텍처와 특징 맵(Feature Map) 가시화",
+      "3주차: Pre-trained 사전학습 모델 전이 학습을 통한 연구용 객체 식별",
+      "4주차: 실무 오프라인 보고서 자동 디지털 인덱싱용 OCR AI 파이프라인 개발"
+    ],
+    isHighlight: true,
+    link: "http://www.kmooc.kr"
   }
 ];
 
@@ -274,90 +431,57 @@ export const SEED_NEWS: NewsArticle[] = [
     id: 2,
     title: "글로벌 ESG 공시 2.0 시대로 전격 전환, 이중 중요성 평가 전면 의무화",
     description: "ISSB 기후 표준안 도입 가속화에 맞춰, 유럽 및 아시아 주요 거래소가 기업의 '재무적 임팩트'와 '사회환경적 임팩트'를 양방향 공시하는 이중 중요성 기조를 전면화합니다.",
-    content: "유럽연합(EU)의 CSRD 시행 계획이 한국 기업들에게도 파급력을 미치고 있습니다. 이번에 도입되는 글로벌 공시 2.0 핵심은 '이중 중요성(Double Materiality)' 적용 여부입니다. 기업의 경영 활동이 지구 환경과 커뮤니티 삶에 미치는 임팩트(Inside-out)와, 기후 위기 및 환경 규제가 기업의 지속가능성에 미치는 재무적 영향(Outside-in)을 동일한 눈높이에서 계량 작성하여 외부 이해관계자에게 전면 오픈해야 합니다. 국내 주요 대기업 연구진은 '글로벌 경쟁력을 잃지 않기 위해 정확도가 담보되는 측정 프레임워크 적용이 시급한 상황'이라고 평가했습니다.",
-    category: "ESG",
-    publishedAt: "2026-06-19",
-    source: "매일ESG 트렌드",
-    readTime: "5분",
-    isFeatured: false
-  },
-  {
-    id: 3,
-    title: "지방 소멸 막는 '로컬 크리에이터 연대', SROI 측정 모델로 주민 금융 대거 모집",
-    description: "민간 크리에이터와 지자체 협동 조합의 지역 정주 촉진 정책이 기존 재정 지원을 넘어 청년 인구 유지에 성공적인 SROI 수치를 검증받고 투자를 결합하고 있습니다.",
-    content: "전국 각 지자체가 소멸 고위험 지역으로 급락하는 와중에, 로컬 청년 크리에이터 네트워크의 복합 거점 프로젝트가 SROI(사회적 투자수익률) 3.5배를 증명하며 임팩트 기금과 크라우드 펀딩을 전격 수혈하는 모범 사례를 연이어 창출하고 있습니다. 본 활동은 지역 청년들이 단순 정주하는 활동 수준을 초월하여 특산품 유통, 로컬 코워킹 스페이스 브랜딩을 시도해 든든한 로컬 생태계를 구축하는 것입니다. 평가 전문가들은 '이러한 주민 밀착형 자립 모델이야말로 인구 소멸에 직접적인 대응 제동을 걸 수 있는 영리한 지역 혁신 해결책'이라고 제안합니다.",
-    category: "지역혁신",
-    publishedAt: "2026-06-15",
-    source: "행정안전브리핑",
-    readTime: "4분",
-    isFeatured: false
-  },
-  {
-    id: 4,
-    title: "AI 프롬프트 엔지니어링, 사회적 기업들의 경영 혁신 날개 달았다",
-    description: "고가 코딩 인프라 없이도 프롬프트 구조화 비법을 획득한 소셜 벤처 리더들이 마케팅, 리서치, 성과 보고 초안을 단 10분 만에 구축하며 90% 비용 절감 기적을 연출하고 있습니다.",
-    content: "부족한 자금력으로 대형 컨설팅 펌의 자문을 받기 어려운 사회적 경제 주체(사회적기업, 자활 센터 등)들에게 생성형 AI 실전 패키지가 유일한 돌파구역으로 작동하고 있습니다. 맞춤 교육을 받은 어느 여성 벤처 임원은 '기존에 이틀 내내 매달렸던 친환경 가계 분석 기획서의 골자를 공인된 프롬프트 카드에 접목하여 단 15분 만에 해외 템플릿급 결과물로 추출하는 환상적 체험을 했다'고 증언했습니다. CSES 등 지지 단체들은 연구 실무 및 현장을 돕기 위한 공공 가치형 프롬프트 키뱅크 유포를 신속 추진할 계획이라고 언급 하였습니다.",
+    content: "유럽연합(EU)의 CSRD 시행 계획이 한국 기업들에게도 파급력을 미치고 있습니다. 이번에 도입되는 글로벌 공시 2.0 핵심은 '이중 중요성(Double Materiality)' 적용 여부입니다. 기업의 경영 활동이 지구 환경과 커뮤니티 삶에 미치는 임팩트(Inside-out)와, 기후 위기 및 환경 규제가 기업의 지속가능성에 미치는 재무적 영향(Outside-in)을 동일한 눈높이에서 계량 작성하여 외부 이해관계자에게 전면 오픈해야 합니다. 국내 주요 대기업 연구진은 글로벌 경쟁력을 잃지 않기 위해 선제적으로 기후 공시 인프라를 전면 가동하겠다는 방침을 드러내고 있습니다.",
     category: "AI/SV",
-    publishedAt: "2026-06-11",
-    source: "소셜벤처연합",
-    readTime: "3분",
-    isFeatured: false
-  },
-  {
-    id: 5,
-    title: "대기업-소셜벤처 오픈이노베이션 활성화, 2026 연합 사회혁신 전략",
-    description: "단순한 기부 차원의 CSR을 탈피, 대기업의 핵심 인프라 기술과 소셜 벤처 특유의 기동성을 접목한 글로벌 공동 가치 창출(CSV)이 주류 마켓 트렌드로 안착 중입니다.",
-    content: "과거 대기업들의 연말 김장하기 대행이나 명절 선물 기증 세대의 사회공헌은 이제 자취를 감추는 추세입니다. 테크 대기업과 지능형 소셜벤처가 파트너십을 맺어 '탄소 측정 센서망 구축', '노년층 인공지능 생활 케어 솔루션' 같은 고부가가치 비즈니스를 공동 제품 출시하는 수준으로 심층 고도화되고 있습니다. 한 소셜임팩트 펀드 매니저는 '대기업이 보유한 독점 자산과 인프라 웨어를 활용해 사회적 가치의 스케일업(Scale-up)을 도울 때 공공 파급력의 체감이 5배 이상 급상승한다'고 지적하기도 했습니다.",
-    category: "사회공헌",
-    publishedAt: "2026-06-08",
-    source: "대한상의 임팩트",
+    publishedAt: "2026-06-22",
+    source: "ESG 글로벌 브리프",
     readTime: "4분",
-    isFeatured: false
+    isFeatured: true
   }
 ];
 
 export const SEED_REPORTS: Report[] = [
   {
     id: 1,
-    title: "AI 기술의 윤리적 가이드라인 및 공공적 가치 평가 모델",
-    institution: "유네스코(UNESCO) 인공지능분과",
-    tags: ["글로벌 표준", "AI 윤리", "사회적 영향성", "UN", "AI 거버넌스", "SDGs", "글로벌 규제"],
-    category: "국외",
-    publishedYear: 2025,
-    downloads: 1420,
-    abstract: "인공지능의 급속한 파급에 따른 알고리즘 모델의 편견 및 사회적 고용 마찰을 정량 평가하는 글로벌 가치 지표 프레임워크를 수안하여 제시하는 UNESCO 공식 보고서 원문입니다.",
-    fileSize: "4.2 MB",
-    link: "https://www.unesco.org/en/artificial-intelligence/recommendation-ethics"
+    title: "2026 기업 사회공헌 지표 및 사회적 이익 보고서",
+    institution: "사회적가치연구원 (CSES)",
+    tags: ["사회공헌", "화폐화", "ESG", "CSES"],
+    category: "국내",
+    publishedYear: 2026,
+    downloads: 4890,
+    fileSize: "5.4 MB",
+    abstract: "국내 주요 500대 기업을 대상으로 실시한 화폐화 측정 프로젝트 결과를 담은 신규 연합 보고서입니다.",
+    link: "https://www.cses.re.kr"
   },
   {
     id: 2,
-    title: "SROI(사회적투자수익률)를 적용한 로컬 탄소 저감 프로젝트 편익 계량화",
-    institution: "사회적가치연구원(CSES)",
-    tags: ["SROI", "화폐 가치", "탄소중립", "탄소 추적", "ESG", "기후 기술", "사회적가치", "SV 측정", "지표 자동화"],
-    category: "국내",
+    title: "글로벌 ESG 공시 2.0 및 이중 중요성 평가 전면 가이드라인",
+    institution: "ISSB & 유럽연합",
+    tags: ["ESG 공시", "이중 중요성", "CSRD", "글로벌 표준"],
+    category: "국외",
     publishedYear: 2026,
-    downloads: 2980,
-    abstract: "친환경 제품 순환 프로젝트와 로컬 협동조합 태양광 마트 등의 활동에서 회수되는 사회적 편익 총량을 화폐 가치로 치환하고 실증 공식으로 검증해 낸 최고 권위 보고서입니다.",
-    fileSize: "5.8 MB",
-    link: "https://www.cses.re.kr/board/research/list.do"
+    downloads: 3750,
+    fileSize: "6.2 MB",
+    abstract: "ISSB 기후 표준안 및 EU CSRD 도입 가속화에 맞춰, 기업의 '재무적 임팩트'와 '사회환경적 임팩트'를 양방향 공시하는 이중 중요성 기조를 전면 해설한 가이드북입니다.",
+    link: "https://www.ifrs.org"
   },
   {
     id: 3,
-    title: "세계경제포럼(WEF) ESG 메트릭스 및 이중 중요성 측정 구조",
-    institution: "세계경제포럼(WEF)",
-    tags: ["WEF", "ESG 지표", "이중 중요성", "ESG", "SDGs", "글로벌 규제"],
-    category: "국외",
+    title: "사회성과인센티브(SPC) 10년의 성과와 향후 과제 연구서",
+    institution: "사회적가치연구원 (CSES)",
+    tags: ["SPC", "사회적가치", "인센티브", "성과측정"],
+    category: "국내",
     publishedYear: 2025,
-    downloads: 1850,
-    abstract: "4대 축(인민, 지구, 번영, 거버넌스)을 기초로 하여 다국적 대기업들이 즉각 계량화할 수 있는 합의형 ESG 투명 보고 지침서 연구 초록입니다.",
-    fileSize: "3.7 MB",
-    link: "https://www.weforum.org/publications/measuring-stakeholder-capitalism-towards-common-metrics-and-consistent-reporting-of-sustainable-value-creation"
+    downloads: 5120,
+    fileSize: "8.3 MB",
+    abstract: "사회성과인센티브(SPC) 출범 10주년을 맞아 그간 참여 기업들이 창출해 낸 사회적 가치를 종합적으로 정량 분석하고, 차세대 SPC 측정 메커니즘을 정립한 학술 보고서입니다.",
+    link: "https://www.cses.re.kr"
   },
   {
     id: 4,
-    title: "지역 소멸 방지 임팩트 펀드의 SROI 평가 및 성과 연계 채권 실증 분석",
-    institution: "행정안전부 국토연구원",
-    tags: ["SIB", "지역 활성화", "인구소멸", "사회적가치", "SV 측정", "사회적 기업", "생산성", "혁신 사례"],
+    title: "지방소멸 대응을 위한 사회성과연계채권(SIB) 성과 보상체계 타당성 검토",
+    institution: "국토연구원 (KRIHS)",
+    tags: ["지방소멸", "SIB", "사회성과연계채권", "지역활성화", "혁신 사례"],
     category: "국내",
     publishedYear: 2026,
     downloads: 2130,
@@ -475,134 +599,134 @@ Lessons Learned:
 export const RESEARCH_INSIGHTS: ResearchInsight[] = [
   {
     id: 1,
-    title: "[핵심 리서치 가이드] OpenAI o1-preview 모델을 활용한 연구 설계 자동화",
-    author: "김선우, 정혜정 (CSES 선임연구원)",
-    date: "2026.03",
-    tag: "Deep Dive",
-    publisher: "사회적가치연구원 (CSES)",
-    doi_or_id: "DOI: 10.51159/cses.2026.03.01",
-    abstract: "본 연구는 OpenAI의 차세대 추론 모델인 o1-preview를 사회과학 및 사회적 가치(SV) 연구 프로세스에 통합하는 방법론을 제시합니다. 프롬프트 엔지니어링 고도화와 반복 추론 과정을 통해, 선행 논문 분석, 연구 가설 설계, 실증 지표 도출 등의 연구 초기 작업을 최대 85% 이상 자동화함으로써 학술 워크플로우의 혁신적 생산성 향상을 검증하였습니다.",
-    link: "https://www.cses.re.kr/board/research/list.do"
-  },
-  {
-    id: 2,
-    title: "The Role of Artificial Intelligence in Achieving the Sustainable Development Goals (SDGs)",
-    author: "Ricardo Vinuesa, et al.",
-    date: "2024.11",
+    title: "The role of artificial intelligence in achieving the Sustainable Development Goals",
+    author: "Ricardo Vinuesa, Hossein Azizpour, Iolanda Leite, Masoumeh Balaei, Virginia Dignum, Frank Domhagen, Anna Felländer, Simone Langhans, Max Tegmark & Francesco Fuso Nerini",
+    date: "2020.01",
     tag: "Policy Paper",
     publisher: "Nature Communications",
     doi_or_id: "DOI: 10.1038/s41467-020-16240-3",
-    abstract: "인공지능(AI)이 UN 지속가능발전목표(SDGs)의 17개 목표와 169개 세부 과제 달성에 미치는 영향을 분석한 기념비적 연구입니다. AI가 134개 세부 목표(79%) 달성을 촉진하는 긍정적 촉매제 역할을 수행할 수 있는 반면, 정보 격차 심화 및 에너지 소모 등의 부작용으로 59개 세부 목표(35%)에 억제 효과를 줄 수 있음을 계량적으로 실증하였습니다.",
+    abstract: "본 연구는 인공지능(AI)이 UN 지속가능발전목표(SDGs)의 17개 목표와 169개 세부 과제 달성에 미치는 영향을 분석하였습니다. AI가 134개 세부 목표(79%) 달성을 촉진하는 긍정적 촉매제 역할을 수행할 수 있는 반면, 정보 격차 심화 및 에너지 소모 등의 부작용으로 59개 세부 목표(35%)에 부정적인 영향을 줄 수 있음을 실증하였습니다.",
     link: "https://www.nature.com/articles/s41467-020-16240-3"
   },
   {
-    id: 3,
-    title: "AI Index 2026 Annual Report: Tracking Technology and Regulation Trajectories",
-    author: "Ray Perrault, Jack Clark",
-    date: "2026.04",
+    id: 2,
+    title: "How Generative AI Will Change Jobs",
+    author: "Thomas H. Davenport, Ian Barkin",
+    date: "2023.06",
     tag: "Analysis",
-    publisher: "Stanford University (HAI)",
-    doi_or_id: "arXiv:2604.10302",
-    abstract: "전 세계 인공지능 기술의 성능 지표, 컴퓨팅 인프라 소모 전력, 특허 수, 다국적 규제 변화 및 거버넌스 가이드라인을 종합적으로 추적한 스탠퍼드 HAI 연구소의 연례 리포트 요약입니다. 생성형 AI 모델의 정렬 기술 발전 속도와 주요국의 규제 법안 입법 건수가 비례하여 폭증하고 있으며, 사회적 신뢰와 거버넌스가 차세대 핵심 화두임을 짚어냅니다.",
-    link: "https://hai.stanford.edu/research/ai-index-report"
+    publisher: "Harvard Business Review (HBR)",
+    doi_or_id: "HBR-2023-06",
+    abstract: "생성형 AI가 현대 노동 시장의 직무 구조와 임직원 생산성에 미치는 직접적인 영향을 실증적으로 분석하였습니다. 단순 업무의 자동화를 넘어, 인간의 창의적 업무 프로세스를 보완하는 협업 모델의 중요성을 다루며, 기술 도입에 맞춘 인력 재교육(Reskilling)과 적응 능력 강화의 당위성을 제시합니다.",
+    link: "https://hbr.org/2023/06/how-generative-ai-will-change-jobs"
+  },
+  {
+    id: 3,
+    title: "Governing AI for Humanity: Final Report",
+    author: "UN High-level Advisory Body on Artificial Intelligence",
+    date: "2024.09",
+    tag: "Policy Paper",
+    publisher: "United Nations (UN)",
+    doi_or_id: "UN-AI-GOV-2024",
+    abstract: "UN 사무총장 직속 AI 고위급 자문위원회가 발표한 글로벌 AI 거버넌스 최종 보고서입니다. 기술 격차 해소, 공통 표준 수립, 윤리적 활용 준수를 골자로 하며, AI 혁신으로부터 소외되는 개발도상국을 포용하기 위한 '글로벌 AI 임팩트 기금' 설치 및 공통의 리스크 진단 표준안 수립을 전 세계에 제안합니다.",
+    link: "https://www.un.org/en/ai-advisory-body"
   },
   {
     id: 4,
-    title: "How Generative AI Can Transform Social Enterprise Productivity: Empirical Evidence",
-    author: "Michael Chui, Lareina Yee",
-    date: "2025.08",
-    tag: "Field Report",
-    publisher: "McKinsey Global Institute (MGI)",
-    doi_or_id: "ID: MGI-2025-GENAI-SOC",
-    abstract: "글로벌 사회적 기업 450개사를 대상으로 생성형 AI 어시스턴트를 도입했을 때 나타나는 정량적 성과 변화를 실증 분석하였습니다. 연구 결과, 제안서 작성, 정부 기금 매칭 자동화, 타당성 검토 등 수작업 행정 워크플로우 비용이 평균 42% 감소하였으며, 이를 통해 확보된 리소스가 지역사회 대면 수혜 프로그램 확대로 전환되는 구조를 밝혔습니다.",
-    link: "https://www.mckinsey.com/mgi/our-research"
+    title: "EU Artificial Intelligence Act (EU AI Act)",
+    author: "European Parliament",
+    date: "2024.03",
+    tag: "Policy Paper",
+    publisher: "European Parliament (EU)",
+    doi_or_id: "EU-ACT-24",
+    abstract: "유럽연합(EU)의 전 세계 최초의 인공지능 법안입니다. AI 기술의 위험 범주를 '수용 불가능한 위험', '고위험', '제한된 위험', '최소 위험'의 4단계로 나누어 차등적 규제를 적용하며, 고위험 AI에 대한 투명성 공시 의무, 알고리즘 감사, 시민 기본권 보호 가이드라인을 강제하고 이를 위반할 시 강력한 징벌적 과징금을 처분하도록 정립했습니다.",
+    link: "https://www.europarl.europa.eu/news/en/headlines/society/20230601STO93804/eu-ai-act-first-regulation-on-artificial-intelligence"
   },
   {
     id: 5,
-    title: "Algorithmic Auditing and Social Value: A Blueprint for AI Governance",
-    author: "Inioluwa Deborah Raji, Joy Buolamwini",
-    date: "2025.02",
-    tag: "Policy Paper",
-    publisher: "MIT Media Lab",
-    doi_or_id: "DOI: 10.1145/3351095.3372874",
-    abstract: "공공 영역 및 소셜 서비스에 배치된 인공지능 모델의 편향성과 윤리적 사회 해악을 선제적으로 예방하기 위한 '알고리즘 감사(Algorithmic Audits)' 체계를 다룹니다. 기업 및 정부의 AI 도구 배포 시, 설계 단계부터 사회적 편익 평가(SROI) 및 위험 시나리오 검토를 전격적으로 의무화하는 정책 가이드라인을 제시합니다.",
-    link: "https://www.media.mit.edu/publications/"
+    title: "사회성과인센티브(SPC) 10년의 성과와 향후 과제 연구서",
+    author: "나석권, 최명, 정경윤 (CSES 연구진)",
+    date: "2025.04",
+    tag: "Deep Dive",
+    publisher: "사회적가치연구원 (CSES)",
+    doi_or_id: "CSES-SPC-10YR",
+    abstract: "사회성과인센티브(SPC) 제도의 도입 10주년을 맞아, 참여 기업들이 창출한 사회성과 측정 결과를 종합 계량화하고 사회적 가치(SV) 화폐화 산출 지표를 체계적으로 분석한 공식 학술 보고서입니다. SPC를 통한 소셜 벤처 생태계의 성장 촉진 효과 및 차세대 성과보상체계 설계안을 제안합니다.",
+    link: "https://www.cses.re.kr/board/research/list.do"
   },
   {
     id: 6,
-    title: "Impact Investing in the Era of AI: Capital Allocation and SV Optimization",
-    author: "Sir Ronald Cohen",
-    date: "2025.12",
-    tag: "Investment",
-    publisher: "Harvard Business Review (HBR)",
-    doi_or_id: "DOI: 10.1225/HBR-AI-2025",
-    abstract: "인공지능 기반 임팩트 투자 플랫폼이 자본 배분의 효율성을 극대화하고, 투자 대상 기업들의 비재무적 사회 성과(ESG) 데이터를 실시간 머신러닝으로 감지하는 메커니즘을 규명합니다. 전통적 재무 이자율 외에, 고유한 정밀 알고리즘을 통한 가칭 'AI-SROI' 계측이 사회적 임팩트 투자의 대중화를 이끌 것임을 선언합니다.",
-    link: "https://hbr.org"
+    title: "The economic potential of generative AI: The next productivity frontier",
+    author: "Michael Chui, James Manyika, Lareina Yee",
+    date: "2023.06",
+    tag: "Analysis",
+    publisher: "McKinsey Global Institute",
+    doi_or_id: "MGI-GENAI-2023",
+    abstract: "생성형 AI의 상용화가 글로벌 경제의 부가가치 및 전 산업 부문 생산성 향상에 끼치는 파급 효과를 실증 분석하였습니다. 보고서에 따르면 생성형 AI는 연간 약 2.6조 달러에서 4.4조 달러 규모의 추가적인 경제적 편익을 창출할 잠재력을 보유하고 있으며, 고객 서비스, 마케팅, 소프트웨어 공학 등 핵심 직무군에서의 자동화 속도를 전격 가속화할 것임을 구체적 통계 지표로 입증하였습니다.",
+    link: "https://www.mckinsey.com/capabilities/mckinsey-digital/our-insights/the-economic-potential-of-generative-ai-the-next-productivity-frontier"
   },
   {
     id: 7,
-    title: "Constitutional AI: Harmlessness from AI Feedback for Policy and Safety",
-    author: "Yuntao Bai, Saurabh Kadavath",
-    date: "2024.12",
-    tag: "Deep Dive",
-    publisher: "Anthropic Research",
-    doi_or_id: "arXiv:2212.08073",
-    abstract: "인간의 수동 피드백(RLHF) 대신 헌법적 가치 기준(AI Feedback)을 주입하여 초거대 언어 모델 스스로 안전성과 정렬 지수를 극대화하도록 훈련시키는 'Constitutional AI'의 기술적 구조를 설명합니다. 인간 사회의 윤리, 인권 선언, 환경 보호 사상을 지침으로 삽입해 탈옥(Jailbreak) 및 편향 답변을 지능적으로 예외화시킵니다.",
-    link: "https://www.anthropic.com/research"
+    title: "Artificial Intelligence Index Report 2024",
+    author: "Nestor Maslej, Loredana Fattorini, Ray Perrault, Jack Clark",
+    date: "2024.04",
+    tag: "Analysis",
+    publisher: "Stanford University (HAI)",
+    doi_or_id: "HAI-INDEX-24",
+    abstract: "전 세계 AI 기술 성능의 발전 흐름, 상용화 동향, 학술 연구 발표 수, 컴퓨팅 전력 소모에 따른 탄소 발자국 및 각국의 법적 규제 추이를 분석한 스탠퍼드 HAI의 연례 지표 보고서입니다. AI 기술 훈련 비용의 급증 추세와 기술 격차, 대형 언어 모델의 유해성과 신뢰성 검증 지표를 다각도로 조사하였습니다.",
+    link: "https://hai.stanford.edu/research/ai-index-report-2024"
   },
   {
     id: 8,
-    title: "Green AI: Environmental Footprint Analysis of Frontier Language Models",
-    author: "Roy Schwartz, Jesse Dodge",
-    date: "2025.06",
-    tag: "Field Report",
-    publisher: "Allen Institute for AI",
-    doi_or_id: "DOI: 10.1145/3381831",
-    abstract: "대형 언어 모델(LLM)의 매개변수 스케일 확장에 따른 지구 온난화 및 수자원 증발량 탄소 발자국을 환경 SROI 기법으로 조명하였습니다. 가중치 소모 전력 대비 탄소 저감에 우호적인 고효율 소형 모델(SLM) 아키텍처로의 전환 흐름 및 재생 에너지를 수급하는 친환경 AI 인프라 최적화 방안을 정량 계산식으로 정립합니다.",
-    link: "https://allenai.org/research"
+    title: "Actionable Auditing: Investigating the Impact of Publicly Facing Biased Facial Analysis Systems",
+    author: "Inioluwa Deborah Raji, Joy Buolamwini",
+    date: "2019.01",
+    tag: "Deep Dive",
+    publisher: "MIT Media Lab / ACM",
+    doi_or_id: "10.1145/3306618.3314244",
+    abstract: "상용 인공지능 안면 인식 알고리즘 모델에 유해하게 내재된 인종 및 성별 편향성을 비판적으로 폭로하고, 이를 해결하기 위한 정기적인 알고리즘 감사(Algorithmic Audit)의 구조적 기준을 제시한 선구적인 학술 논문입니다. 기술이 지향해야 할 공정성과 사회적 기여 가치를 실증 설계로 규명했습니다.",
+    link: "https://dl.acm.org/doi/10.1145/3306618.3314244"
   },
   {
     id: 9,
-    title: "Global AI Regulation Index and EU AI Act Implementation",
-    author: "Dragoș Tudorache, Brando Benifei",
-    date: "2025.05",
-    tag: "Policy Paper",
-    publisher: "European Parliament Research",
-    doi_or_id: "CE-AI-ACT-2025-EU",
-    abstract: "세계 최초로 전격 시행되는 유럽연합 인공지능 법안(EU AI Act)의 카테고리별 위험 등급(수용 불가능, 고위험, 범용 AI 모델) 규제 이행 로드맵과 이를 어길 시 부과되는 징벌적 과징금 집행 표준안 분석입니다. 신뢰할 수 있고 투명한 모델 검증 기법 및 공정한 사회적 가치 기조의 준수를 요구하는 글로벌 빅테크들의 공동 대응 전술을 내포합니다.",
-    link: "https://www.europarl.europa.eu"
+    title: "Constitutional AI: Harmlessness from AI Feedback",
+    author: "Yuntao Bai, Saurabh Kadavath, Sandipan Kundu, Amanda Askell",
+    date: "2022.12",
+    tag: "Deep Dive",
+    publisher: "Anthropic Research",
+    doi_or_id: "arXiv:2212.08073",
+    abstract: "인간의 수동 피드백(RLHF) 대신 명문화된 헌법적 가치 지침(Constitutional Rules)과 자가 피드백 루프를 결합하여 인공지능 스스로 무해성(Harmlessness)과 안전성을 최적화해 고도 훈련하도록 돕는 'Constitutional AI' 방법론을 기술적으로 정립한 기념비적 논문입니다.",
+    link: "https://arxiv.org/abs/2212.08073"
   },
   {
     id: 10,
-    title: "Evaluating the Social Return on Investment (SROI) of Public AI Chatbots",
-    author: "최명, 정경윤 (CSES 선임연구원)",
-    date: "2026.01",
-    tag: "Analysis",
-    publisher: "사회적가치연구원 (CSES)",
-    doi_or_id: "DOI: 10.51159/cses.2026.01.02",
-    abstract: "지자체 및 복지 센터에 적용된 'AI 말벗/돌봄 인공지능 콜 서비스'의 사회적 편익 총량을 SROI 산출 가이드라인에 근거하여 화폐적으로 계량화하였습니다. 돌봄 공백의 실시간 대체 및 노년 고독 완화에 따른 우울증 의료 비용 절감 등의 연간 회수 수치를 정밀 계산해 총 투입 대비 SROI가 약 3.86배에 이름을 입증하였습니다.",
-    link: "https://www.cses.re.kr"
+    title: "Green AI",
+    author: "Roy Schwartz, Jesse Dodge, Noah A. Smith, Oren Etzioni",
+    date: "2020.12",
+    tag: "Field Report",
+    publisher: "Communications of the ACM",
+    doi_or_id: "10.1145/3381831",
+    abstract: "인공지능 연구 및 훈련 과정에서 컴퓨팅 스케일의 급증에 따른 전기적 소모량과 무분별한 이산화탄소 탄소 발자국 축적을 'Green AI'라는 친환경 ESG 개념을 통해 비판적으로 입증하였습니다. 모델 정확도(Accuracy)뿐만 아니라 연산당 에너지 효율성(Efficiency)을 AI 평가의 공식 핵심 척도로 삼아야 함을 정량 계측식으로 주장합니다.",
+    link: "https://arxiv.org/abs/1907.10597"
   },
   {
     id: 11,
-    title: "AI and Social Mobility: Modeling Career Transitions and Workforce Disruption",
-    author: "Daron Acemoglu, Pascual Restrepo",
-    date: "2025.10",
-    tag: "Analysis",
-    publisher: "National Bureau of Economic Research (NBER)",
-    doi_or_id: "NBER Working Paper w32104",
-    abstract: "인공지능의 도입이 저소득층 사무 노동자의 직업 이직 및 근로 가치 하락에 미치는 파괴적인 지각 변동을 분석하고 거시경제 모델을 적용하였습니다. 단순한 대체 이론을 넘어, 혁신적인 신규 직무군 창출과 소득 안정 보조책이 어우러지지 않을 시 심화되는 불평등 구조를 화폐 소득의 편익 관점에서 실증 계측합니다.",
-    link: "https://www.nber.org/papers"
+    title: "The Global Risks Report 2024",
+    author: "World Economic Forum (WEF) Research",
+    date: "2024.01",
+    tag: "Investment",
+    publisher: "World Economic Forum (WEF)",
+    doi_or_id: "WEF-RISK-2024",
+    abstract: "글로벌 비즈니스 및 지구 환경 측면의 위험 요인들을 종합 서베이한 세계경제포럼의 글로벌 리스크 보고서입니다. 기술 부문의 최고 위험 요소로 생성형 AI를 매개로 한 잘못된 정보(Misinformation/Disinformation) 유포를 꼽고 있으며, 기후 변화 대응 실패 및 지정학적 불안정성과의 상호 인과 관계를 구조적으로 조명하였습니다.",
+    link: "https://www.weforum.org/publications/global-risks-report-2024/"
   },
   {
     id: 12,
-    title: "Corporate AI Investment Strategies and Aligning with ESG Frameworks",
-    author: "Paul Romer, Rebecca Henderson",
-    date: "2026.02",
-    tag: "Investment",
-    publisher: "Stanford Graduate School of Business",
-    doi_or_id: "DOI: 10.2139/ssrn.461028",
-    abstract: "다국적 상장 기업들이 막대한 AI 데이터 센터 자본을 집행하는 과정에서 발생되는 공급망 탄소 점검과 알고리즘 투명성 의무를 자사의 기존 ESG 관리 기조에 강결합시키는 구조적 프레임워크를 개발하였습니다. 친환경 녹색 컴퓨팅 및 임직원 대상 전환 교육 투자가 기업 평판과 장기 기업가치 향상으로 이어진다는 결과를 검증했습니다.",
-    link: "https://www.gsb.stanford.edu"
+    title: "Tasks, Automation, and the Labor Market in the Era of AI",
+    author: "Daron Acemoglu, Pascual Restrepo",
+    date: "2019.05",
+    tag: "Analysis",
+    publisher: "National Bureau of Economic Research (NBER)",
+    doi_or_id: "NBER-w25875",
+    abstract: "디지털 자동화 및 인공지능 도입이 현대 가계 노동 시장의 고용 비율과 실질 임금 성장에 미치는 불균형적 파급 효과를 작업(Tasks) 중심 프레임워크를 기반으로 거시 분석하였습니다. 자동화의 대체 효과가 신규 일자리 창출의 생산성 증대 효과를 상회할 때 야기되는 사회적 불평등 구조를 수식 모델로 증명하고 대응 정책 방향을 피력했습니다.",
+    link: "https://www.nber.org/papers/w25875"
   }
 ];

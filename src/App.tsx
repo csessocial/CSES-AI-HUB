@@ -32,6 +32,7 @@ import {
   Lightbulb,
   Cpu,
   ChevronLeft,
+  MessageSquare,
 } from "lucide-react";
 import { motion } from "motion/react";
 import { 
@@ -343,21 +344,21 @@ export default function App() {
     // Recommend courses based on the user's desired goal (skill choice)
     const matches = ENHANCED_COURSES.filter(course => {
       if (answers.skill === "데이터 분석 및 시각화 자동화") {
-        return course.title.includes("데이터") || course.title.includes("시각화") || course.title.includes("파이썬") || course.id === 104 || course.id === 108;
+        return course.title.includes("데이터") || course.title.includes("시각화") || course.title.includes("파이썬") || course.id === 102 || course.id === 103 || course.id === 107;
       }
       if (answers.skill === "AI RAG 챗봇 제작 및 정보 검색") {
-        return course.title.includes("RAG") || course.title.includes("챗봇") || course.title.includes("에이전트") || course.id === 109 || course.id === 110;
+        return course.title.includes("RAG") || course.title.includes("챗봇") || course.title.includes("에이전트") || course.id === 104 || course.id === 109;
       }
       if (answers.skill === "고급 프롬프트 엔지니어링") {
-        return course.title.includes("프롬프트") || course.title.includes("Prompt") || course.id === 101 || course.id === 102;
+        return course.title.includes("프롬프트") || course.title.includes("Prompt") || course.id === 101 || course.id === 108 || course.id === 106;
       }
       if (answers.skill === "행정 단순 반복 업무 자동화") {
-        return course.title.includes("생산성") || course.title.includes("자동화") || course.title.includes("업무") || course.id === 103 || course.id === 106;
+        return course.title.includes("생산성") || course.title.includes("자동화") || course.title.includes("업무") || course.id === 105 || course.id === 102;
       }
       return true;
     });
 
-    const ids = matches.length > 0 ? matches.map(c => c.id) : [101, 102, 103, 104];
+    const ids = matches.length > 0 ? matches.map(c => c.id) : [101, 102, 104, 105, 108];
     setDiagnosedCourseIds(ids);
   };
 
@@ -463,6 +464,34 @@ export default function App() {
   const [promptIdea, setPromptIdea] = useState<string>("");
   const [isIdeaSubmitted, setIsIdeaSubmitted] = useState<boolean>(false);
   const [copiedPromptId, setCopiedPromptId] = useState<number | null>(null);
+
+  // Submitted Prompt Ideas State for Bulletin Board
+  const [submittedPromptIdeas, setSubmittedPromptIdeas] = useState<any[]>([
+    {
+      id: "idea-1",
+      content: "학술 연구 논문 초록의 핵심 내용만 구조화하여 국문으로 요약하고 키워드를 추출해주는 번역-요약 하이브리드 프롬프트가 필요합니다.",
+      author: "이지은 연구원",
+      date: "2026-06-25",
+      status: "제안 검토 완료",
+      hasImplemented: true
+    },
+    {
+      id: "idea-2",
+      content: "사회적가치(SV) 화폐화 측정 원데이터 엑셀 파일을 업로드하기 전, 누락 데이터(NaN)가 있는 부분을 검진해주는 파이썬 코드 생성용 프롬프트를 원합니다.",
+      author: "김민재 연구원",
+      date: "2026-06-24",
+      status: "검토 진행 중",
+      hasImplemented: false
+    },
+    {
+      id: "idea-3",
+      content: "특정 기업의 지속가능경영보고서(ESG)의 온실가스 배출 추이 정보만 추출하여 연도별 비교 표로 정리하는 특화 프롬프트를 제안합니다.",
+      author: "최영진 연구원",
+      date: "2026-06-22",
+      status: "제안 검토 완료",
+      hasImplemented: true
+    }
+  ]);
 
   const [customPrompts, setCustomPrompts] = useState([
     {
@@ -735,6 +764,33 @@ export default function App() {
     document.body.removeChild(link);
   };
 
+  // Download News Table as clean Excel CSV spreadsheet
+  const handleDownloadNewsCSV = () => {
+    let csvContent = "\uFEFF"; // UTF-8 BOM
+    csvContent += "순번,기사 제목,출처 언론사,카테고리,발행일자,원문 뉴스 링크\n";
+    
+    cachedNewsList.forEach((n, index) => {
+      const row = [
+        index + 1,
+        `"${(n.title || "").replace(/"/g, '""')}"`,
+        `"${(n.source || "").replace(/"/g, '""')}"`,
+        n.category || "미분류",
+        n.pubDate || n.date || "",
+        `"${(n.link || "").replace(/"/g, '""')}"`
+      ].join(",");
+      csvContent += row + "\n";
+    });
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", `CSES_AI_HUB_News_Database_${new Date().toISOString().slice(0,10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   // --------------------------------------------------
   // 6. UI Navigation Rendering Logic
   // --------------------------------------------------
@@ -789,16 +845,28 @@ export default function App() {
             })}
           </nav>
 
-          {/* Right Search Input */}
-          <div className="relative w-36 sm:w-56 md:w-64 shrink-0">
-            <input
-              type="text"
-              placeholder="통합 검색..."
-              value={naverSearchQuery}
-              onChange={(e) => setNaverSearchQuery(e.target.value)}
-              className="w-full bg-slate-50/80 text-xs pl-9 pr-4 py-2.5 rounded-full border border-slate-200 outline-none focus:bg-white focus:border-brand-500 transition-all text-slate-800 placeholder-slate-400 font-medium"
-            />
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none" />
+          {/* Right Area: Search & SV Book Button */}
+          <div className="flex items-center gap-2.5 shrink-0">
+            <div className="relative w-32 sm:w-48 lg:w-56 hidden md:block">
+              <input
+                type="text"
+                placeholder="통합 검색..."
+                value={naverSearchQuery}
+                onChange={(e) => setNaverSearchQuery(e.target.value)}
+                className="w-full bg-slate-50/80 text-xs pl-9 pr-4 py-2.5 rounded-full border border-slate-200 outline-none focus:bg-white focus:border-brand-500 transition-all text-slate-800 placeholder-slate-400 font-medium"
+              />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none" />
+            </div>
+
+            <a
+              href="https://csessocial.github.io/sv-book/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 px-4 py-2.5 rounded-full bg-gradient-to-r from-slate-900 to-slate-800 text-white font-extrabold text-[11px] md:text-xs hover:from-[#D81159] hover:to-[#b50e49] active:scale-95 transition-all duration-200 shadow-sm border border-slate-800 whitespace-nowrap cursor-pointer group"
+            >
+              <span>SV Book 바로가기</span>
+              <span className="group-hover:translate-x-0.5 transition-transform">📖</span>
+            </a>
           </div>
 
         </div>
@@ -852,7 +920,12 @@ export default function App() {
                   
                   <div className="flex flex-wrap items-center gap-4 pt-4">
                     <button 
-                      onClick={() => setActiveTab("Guide")}
+                      onClick={() => {
+                        const el = document.getElementById("platform-guide");
+                        if (el) {
+                          el.scrollIntoView({ behavior: "smooth", block: "start" });
+                        }
+                      }}
                       className="bg-brand-500 text-white hover:bg-brand-600 font-black text-xs md:text-sm px-6 py-4 rounded-[20px] shadow-md shadow-brand-500/15 hover:shadow-brand-500/25 active:scale-[0.98] transition-all duration-150 cursor-pointer flex items-center gap-1.5"
                     >
                       플랫폼 가이드 보기 <ArrowRight className="w-4 h-4 text-white" />
@@ -885,87 +958,50 @@ export default function App() {
                     </button>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    {/* news card 1 */}
-                    <div 
-                      onClick={() => {
-                        const news = {
-                          title: "젠슨 황 \"HBM 더 달라\" 요청하더니...삼전닉...",
-                          description: "통해 HBM3E·HBM4·HBM4E 공급 방안을 논의했다. 올해 회의에서는 HBM 판매 확대, 주요 거래선 대응이 핵심... SK하이닉스는 지난 18일...",
-                          pubDate: "2026-06-23",
-                          source: "전자신문",
-                          origin: "국내",
-                          link: "https://www.etnews.com"
-                        };
-                        handleOpenNewsDetail(news);
-                      }}
-                      className="group bg-gradient-to-b from-white to-slate-50/50 hover:to-pink-50/10 rounded-[32px] p-5 border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.015)] hover:shadow-[0_12px_30px_rgba(210,10,80,0.04)] hover:border-pink-200/50 transition-all duration-300 flex flex-col justify-between cursor-pointer space-y-4 text-start hover:-translate-y-1"
-                    >
-                      <div className="space-y-4">
-                        <div className="w-full h-40 rounded-[24px] overflow-hidden bg-slate-100">
-                          <img 
-                            src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=800" 
-                            alt="Semiconductor" 
-                            className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                            referrerPolicy="no-referrer"
-                          />
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {cachedNewsList.length > 0 ? (
+                      cachedNewsList.slice(0, 3).map((news, index) => (
+                        <div 
+                          key={`home-news-${news.id || index}`}
+                          onClick={() => handleOpenNewsDetail(news)}
+                          className="group bg-gradient-to-b from-white to-slate-50/50 hover:to-pink-50/10 rounded-[32px] p-5 border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.015)] hover:shadow-[0_12px_30px_rgba(210,10,80,0.04)] hover:border-pink-200/50 transition-all duration-300 flex flex-col justify-between cursor-pointer space-y-4 text-start hover:-translate-y-1 animate-fadeIn"
+                        >
+                          <div className="space-y-4">
+                            <div className="w-full h-40 rounded-[24px] overflow-hidden bg-slate-100 relative">
+                              <img 
+                                src={news.image || getNewsImageFallback(index)} 
+                                alt={news.title} 
+                                className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                                referrerPolicy="no-referrer"
+                              />
+                            </div>
+                            <div className="flex justify-between items-center text-[10px] font-bold">
+                              <span className="bg-pink-50 text-[#D20A50] px-2.5 py-1 rounded-lg">{news.category}</span>
+                              <span className="text-slate-400">{news.pubDate}</span>
+                            </div>
+                            <h3 className="text-sm font-black text-slate-900 tracking-tight leading-snug group-hover:text-[#D20A50] transition-colors line-clamp-2">
+                              {news.title}
+                            </h3>
+                          </div>
                         </div>
-                        <div className="flex justify-between items-center text-[10px] font-bold">
-                          <span className="bg-pink-50 text-[#D20A50] px-2.5 py-1 rounded-lg">기술</span>
-                          <span className="text-slate-400">2026-06-23</span>
+                      ))
+                    ) : (
+                      // Loading State
+                      Array.from({ length: 3 }).map((_, i) => (
+                        <div key={`news-skeleton-${i}`} className="bg-white rounded-[32px] p-5 border border-slate-100 animate-pulse space-y-4">
+                          <div className="w-full h-40 bg-slate-100 rounded-[24px]" />
+                          <div className="h-4 bg-slate-100 rounded w-1/4" />
+                          <div className="h-4 bg-slate-100 rounded w-3/4" />
                         </div>
-                        <h3 className="text-sm font-black text-slate-900 tracking-tight leading-snug group-hover:text-[#D20A50] transition-colors line-clamp-1">
-                          젠슨 황 "HBM 더 달라" 요청하더니...삼전닉...
-                        </h3>
-                        <p className="text-[11px] text-slate-500 leading-relaxed line-clamp-2">
-                          통해 HBM3E·HBM4·HBM4E 공급 방안을 논의했다. 올해 회의에서는 HBM 판매 확대, 주요 거래선 대응이 핵심... SK하이닉스는 지난 18일...
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* news card 2 */}
-                    <div 
-                      onClick={() => {
-                        const news = {
-                          title: "모태펀드-국민성장펀드 '투자 이어달리기' 가동...",
-                          description: "정부가 모태펀드와 국민성장펀드를 연계해 벤처·스타트업이 글로벌 유니콘을 넘어 빅테크 기업으로... 기틀을 확고히 안착시키고, 혁신기업의 성장...",
-                          pubDate: "2026-06-23",
-                          source: "한국경제",
-                          origin: "국내",
-                          link: "https://www.hankyung.com"
-                        };
-                        handleOpenNewsDetail(news);
-                      }}
-                      className="group bg-gradient-to-b from-white to-slate-50/50 hover:to-pink-50/10 rounded-[32px] p-5 border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.015)] hover:shadow-[0_12px_30px_rgba(210,10,80,0.04)] hover:border-pink-200/50 transition-all duration-300 flex flex-col justify-between cursor-pointer space-y-4 text-start hover:-translate-y-1"
-                    >
-                      <div className="space-y-4">
-                        <div className="w-full h-40 rounded-[24px] overflow-hidden bg-slate-100">
-                          <img 
-                            src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=800" 
-                            alt="Meeting Speaker" 
-                            className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                            referrerPolicy="no-referrer"
-                          />
-                        </div>
-                        <div className="flex justify-between items-center text-[10px] font-bold">
-                          <span className="bg-pink-50 text-[#D20A50] px-2.5 py-1 rounded-lg">규제</span>
-                          <span className="text-slate-400">2026-06-23</span>
-                        </div>
-                        <h3 className="text-sm font-black text-slate-900 tracking-tight leading-snug group-hover:text-[#D20A50] transition-colors line-clamp-1">
-                          모태펀드-국민성장펀드 '투자 이어달리기' 가동...
-                        </h3>
-                        <p className="text-[11px] text-slate-500 leading-relaxed line-clamp-2">
-                          정부가 모태펀드와 국민성장펀드를 연계해 벤처·스타트업이 글로벌 유니콘을 넘어 빅테크 기업으로... 기틀을 확고히 안착시키고, 혁신기업의 성장...
-                        </p>
-                      </div>
-                    </div>
+                      ))
+                    )}
                   </div>
                 </div>
 
               </div>
 
               {/* BAND 3: CSES AI HUB 플랫폼 가이드 */}
-              <div className="space-y-6 pt-4 text-start">
+              <div id="platform-guide" className="space-y-6 pt-4 text-start">
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
                     <HelpCircle className="w-5 h-5 text-slate-400 shrink-0" />
@@ -1171,12 +1207,26 @@ export default function App() {
                 <div className="flex flex-col items-center text-center py-6">
                   <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-[10px] font-black tracking-wider bg-brand-50 text-brand-500 border border-brand-100 uppercase mb-4 shadow-3xs">
                     <span className="inline-block w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse"></span>
-                    REAL-TIME GLOBAL AI NEWS
+                    REAL-TIME GLOBAL AI NEWS DATABASE
                   </div>
                   <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
-                    실시간 1줄 핵심 요약<br/>
+                    실시간 축적 데이터베이스<br/>
                     <span className="text-brand-500">AI 뉴스 및 트렌드</span>
                   </h1>
+                  <p className="text-slate-400 text-xs mt-3 max-w-lg font-semibold">
+                    매일 KST 기준으로 최신 인공지능 기술, 규제, 연구 트렌드 뉴스가 지속적으로 축적됩니다.
+                  </p>
+                  
+                  {/* Download CSV Action button */}
+                  <div className="mt-5">
+                    <button
+                      onClick={handleDownloadNewsCSV}
+                      className="bg-emerald-500 hover:bg-emerald-600 text-white font-black text-xs px-5 py-3 rounded-[15px] shadow-md shadow-emerald-500/15 hover:shadow-emerald-500/25 active:scale-[0.98] transition-all duration-150 cursor-pointer flex items-center gap-2 border border-emerald-400"
+                    >
+                      <span className="text-sm">📥</span>
+                      <span>전체 축적 뉴스 CSV 다운로드</span>
+                    </button>
+                  </div>
                 </div>
 
                 {/* 1-B. 오늘의 주요 AI 뉴스 (TOP 3) 따로 배치 */}
@@ -1243,9 +1293,7 @@ export default function App() {
                                   {item.title}
                                 </h3>
                               </div>
-                              <p className="text-slate-600 text-xs leading-relaxed line-clamp-2 bg-slate-50 p-3.5 rounded-2xl border border-slate-100/60 mt-2 font-medium">
-                                {item.summary}
-                              </p>
+
                             </div>
                           </motion.div>
                         );
@@ -1385,9 +1433,7 @@ export default function App() {
                               </h3>
 
                               {/* Body Description */}
-                              <p className="text-slate-500 text-xs leading-relaxed line-clamp-3 bg-slate-50 p-3 rounded-xl border border-slate-100/50 mt-2 font-medium">
-                                {item.summary}
-                              </p>
+
                             </div>
                           </motion.div>
                         );
@@ -1750,6 +1796,73 @@ export default function App() {
                 </div>
               </div>
 
+              {/* 프롬프트 아이디어 실시간 현황판 (Bulletin Board) */}
+              <div className="bg-white rounded-[2.5rem] border border-gray-100 p-6 md:p-8 shadow-xs space-y-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-100 pb-4 text-start">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <MessageSquare className="w-5 h-5 text-[#D81159] shrink-0" />
+                      <h3 className="text-lg font-black text-slate-900 tracking-tight">프롬프트 제안 & 개발 현황판</h3>
+                    </div>
+                    <p className="text-slate-400 text-xs font-semibold">
+                      연구원분들이 제안한 소중한 아이디어가 검토 및 제작되는 실시간 진행 상황입니다.
+                    </p>
+                  </div>
+                  <span className="bg-pink-50 text-[#D81159] text-[10px] font-black px-3.5 py-1.5 rounded-full uppercase tracking-wider self-start sm:self-center shrink-0 border border-pink-100/80">
+                    📡 실시간 상태 연동 중
+                  </span>
+                </div>
+
+                <div className="overflow-x-auto rounded-2xl border border-slate-100">
+                  <table className="w-full text-left text-xs border-collapse">
+                    <thead>
+                      <tr className="bg-slate-50 border-b border-slate-100 text-slate-500 font-extrabold uppercase tracking-wider">
+                        <th className="py-3 px-4 w-12 text-center">번호</th>
+                        <th className="py-3 px-4">제안 내용</th>
+                        <th className="py-3 px-4 w-32">제안자</th>
+                        <th className="py-3 px-4 w-32">제안일</th>
+                        <th className="py-3 px-4 w-36 text-center">진행 상태</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 font-semibold text-slate-700">
+                      {submittedPromptIdeas.map((idea, index) => (
+                        <tr key={idea.id} className="hover:bg-slate-50/50 transition duration-150">
+                          <td className="py-4 px-4 text-center font-mono text-slate-400">{submittedPromptIdeas.length - index}</td>
+                          <td className="py-4 px-4 pr-6">
+                            <p className="text-slate-800 leading-relaxed font-bold break-words max-w-xl">
+                              {idea.content}
+                            </p>
+                          </td>
+                          <td className="py-4 px-4 text-slate-500 flex items-center gap-1.5 whitespace-nowrap">
+                            <div className="w-5 h-5 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-[10px] font-black border border-slate-200 shrink-0">
+                              {idea.author[0]}
+                            </div>
+                            <span>{idea.author}</span>
+                          </td>
+                          <td className="py-4 px-4 text-slate-400 font-mono whitespace-nowrap">{idea.date}</td>
+                          <td className="py-4 px-4 text-center whitespace-nowrap">
+                            <div className="flex flex-col items-center gap-1">
+                              <span className={`text-[9px] font-black px-2.5 py-1 rounded-md tracking-wider uppercase border ${
+                                idea.hasImplemented 
+                                  ? "bg-emerald-50 text-emerald-600 border-emerald-100" 
+                                  : "bg-amber-50 text-amber-600 border-amber-100"
+                              }`}>
+                                {idea.status}
+                              </span>
+                              {idea.hasImplemented && (
+                                <span className="text-[8px] font-black text-emerald-500 flex items-center gap-0.5 animate-pulse">
+                                  ✓ 라이브러리 반영 완료
+                                </span>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
               {/* Submit ideas banner (Dark theme card) */}
               <div className="bg-gradient-to-br from-slate-900 via-slate-850 to-slate-950 text-white rounded-[2.5rem] p-8 md:p-10 shadow-xl border border-slate-800 flex flex-col lg:flex-row justify-between items-stretch gap-8 relative overflow-hidden">
                 {/* Decorative background flare */}
@@ -1801,6 +1914,15 @@ export default function App() {
                       <button 
                         onClick={() => {
                           if (promptIdea.trim() === "") return;
+                          const newIdea = {
+                            id: `idea-${Date.now()}`,
+                            content: promptIdea,
+                            author: "나 (연구원)",
+                            date: new Date().toISOString().slice(0, 10),
+                            status: "검토 진행 중",
+                            hasImplemented: false
+                          };
+                          setSubmittedPromptIdeas(prev => [newIdea, ...prev]);
                           setIsIdeaSubmitted(true);
                         }}
                         disabled={promptIdea.trim() === ""}
@@ -2165,25 +2287,25 @@ export default function App() {
                         </div>
 
                         {/* Footer Info Line */}
-                        <div className="pt-3 border-t border-gray-100 flex flex-row justify-between items-center gap-4 mt-1">
-                          {insight.link ? (
-                            <a 
-                              href={insight.link}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-[#D81159] hover:text-[#c40e4f] text-[10px] font-black flex items-center gap-1 transition-all duration-200 group/link cursor-pointer uppercase tracking-wider"
-                              title="공식 리서치 자료 다운로드 페이지로 이동"
-                            >
-                              <span>Official Download Link</span>
-                              <ArrowRight className="w-3 h-3 transform group-hover/link:translate-x-1 transition-transform duration-200" />
-                            </a>
-                          ) : (
-                            <span className="text-gray-400 text-[10px] font-medium uppercase tracking-wider">원문 다운로드 링크 준비중</span>
-                          )}
-
-                          <span className="bg-emerald-50 text-emerald-600 font-black text-[9px] px-2.5 py-1 rounded-md flex items-center gap-1 border border-emerald-100/80 uppercase tracking-wider shrink-0">
-                            ✅ 검증된 실증 논문 (Hallucination 0%)
+                        <div className="pt-3 border-t border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mt-1">
+                          <span className="text-slate-400 text-[10px] font-black uppercase tracking-wider">
+                            🏛️ CSES AI DB
                           </span>
+
+                          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
+                            <a 
+                              href={insight.link} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1 bg-[#D81159]/10 text-[#D81159] hover:bg-[#D81159] hover:text-white transition-all duration-200 text-[10px] font-black px-3.5 py-1.5 rounded-lg border border-[#D81159]/15 shadow-xs"
+                            >
+                              <ExternalLink className="w-3 h-3" />
+                              <span>원문 링크 바로가기</span>
+                            </a>
+                            <span className="bg-emerald-50 text-emerald-600 font-black text-[9px] px-2.5 py-1.5 rounded-md flex items-center gap-1 border border-emerald-100/80 uppercase tracking-wider shrink-0">
+                              ✅ 실증 논문 검증 완료
+                            </span>
+                          </div>
                         </div>
                       </motion.div>
                     );
@@ -2349,7 +2471,13 @@ export default function App() {
                                 <Database className="w-4 h-4 text-slate-400 shrink-0" />
                                 CSES_SROI_Report_Archive_2026.csv
                               </span>
-                              <button onClick={() => setActiveTab("DeepInsight_DB")} className="px-3 py-1.5 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition text-[10px] shrink-0 font-bold">
+                              <button 
+                                onClick={() => {
+                                  setActiveTab("DeepInsight_DB");
+                                  handleDownloadCSV();
+                                }} 
+                                className="px-3 py-1.5 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition text-[10px] shrink-0 font-bold"
+                              >
                                 즉시 백업 받기
                               </button>
                             </div>

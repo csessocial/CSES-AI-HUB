@@ -29,9 +29,7 @@ function getGeminiClient() {
   return aiClient;
 }
 
-import { createRequire } from "module";
-const require = createRequire(import.meta.url || "file://");
-const __filename = new URL(import.meta.url || import.meta.filename || "file://" + process.argv[1]).pathname;
+const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const mediaSourceMap: { [key: string]: string } = {
@@ -920,9 +918,25 @@ async function startServer() {
       );
 
       if (newsData.length > 0) {
-        // Sort by date descending
-        newsCache = newsData.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-        console.log(`Cache updated with ${newsCache.length} news items.`);
+        // Merge with existing cache to accumulate news over time without duplicates
+        const existingLinks = new Set(newsCache.map(n => n.link.trim().toLowerCase()));
+        const existingTitles = new Set(
+          newsCache.map(n => n.title.replace(/[^a-zA-Z0-9가-힣]/g, "").replace(/\s+/g, "").slice(0, 18).toLowerCase())
+        );
+        
+        const newUniqueArticles = newsData.filter(n => {
+          const normLink = n.link.trim().toLowerCase();
+          const normTitle = n.title.replace(/[^a-zA-Z0-9가-힣]/g, "").replace(/\s+/g, "").slice(0, 18).toLowerCase();
+          if (existingLinks.has(normLink) || existingTitles.has(normTitle)) {
+            return false;
+          }
+          return true;
+        });
+
+        // Combine and sort by date descending
+        const combined = [...newUniqueArticles, ...newsCache];
+        newsCache = combined.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+        console.log(`Cache updated. Accumulated total news items: ${newsCache.length}. (Added ${newUniqueArticles.length} new items)`);
       }
     } catch (error) {
       console.error("Cache fetch error:", error);
