@@ -1,5 +1,6 @@
 import express from "express";
 import path from "path";
+import { fileURLToPath } from "url";
 import { createServer as createViteServer } from "vite";
 import dotenv from "dotenv";
 import axios from "axios";
@@ -27,6 +28,13 @@ function getGeminiClient() {
   }
   return aiClient;
 }
+
+const _filename = typeof import.meta !== "undefined" && import.meta.url
+  ? fileURLToPath(import.meta.url)
+  : (typeof __filename !== "undefined" ? __filename : "");
+const _dirname = typeof import.meta !== "undefined" && import.meta.url
+  ? path.dirname(_filename)
+  : (typeof __dirname !== "undefined" ? __dirname : "");
 
 const mediaSourceMap: { [key: string]: string } = {
   "yna.co.kr": "연합뉴스",
@@ -1060,13 +1068,25 @@ async function startServer() {
         },
       });
       if (response.data && response.data.items) {
-        // Crawl and resolve real article OG images in parallel
+        // Crawl and resolve real article OG images and extract media source in parallel
         const itemsWithImages = await Promise.all(
           response.data.items.map(async (item: any, index: number) => {
             const image = await getOgImage(item.originallink, item.link, index);
+            const link = (item.originallink || item.link || "").trim();
+            const domainMatched = allowedDomains.find(d => link.toLowerCase().includes(d));
+            let sourceDomain = domainMatched;
+            if (!sourceDomain) {
+              try {
+                sourceDomain = new URL(link).hostname.replace("www.", "");
+              } catch (e) {
+                sourceDomain = "news";
+              }
+            }
+            const source = mediaSourceMap[sourceDomain] || sourceDomain || "주요 언론";
             return {
               ...item,
-              image
+              image,
+              source
             };
           })
         );

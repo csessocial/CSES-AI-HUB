@@ -1030,8 +1030,11 @@ export default function App() {
                               />
                             </div>
                             <div className="flex justify-between items-center text-[10px] font-bold">
-                              <span className="bg-pink-50 text-[#D20A50] px-2.5 py-1 rounded-lg">{news.category}</span>
-                              <span className="text-slate-400">{news.pubDate}</span>
+                              <div className="flex items-center gap-1.5">
+                                <span className="bg-pink-50 text-[#D20A50] px-2.5 py-1 rounded-lg">{news.category}</span>
+                                <span className="text-slate-500 font-extrabold">{news.source || "주요 언론"}</span>
+                              </div>
+                              <span className="text-slate-400 font-mono">{news.pubDate}</span>
                             </div>
                             <h3 className="text-sm font-black text-slate-900 tracking-tight leading-snug group-hover:text-[#D20A50] transition-colors line-clamp-2">
                               {news.title}
